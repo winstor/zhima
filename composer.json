@@ -6,7 +6,9 @@
     "type": "project",
     "require": {
         "php": ">=7.0.0",
+        "encore/laravel-admin": "^1.7",
         "fideloper/proxy": "~3.3",
+        "laravel-admin-ext/multitenancy": "^2.1",
         "laravel/framework": "5.5.*",
         "laravel/tinker": "~1.0"
     },
@@ -53,5 +55,18 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "optimize-autoloader": true
+    },
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://mirrors.aliyun.com/composer/"
+        },
+        "multitenancy": {
+            "type": "path",
+            "url": "storage/multitenancy",
+            "options": {
+                "symlink": false
+            }
+        }
     }
 }
