@@ -17,5 +17,5 @@
  * Admin::js('/packages/prettydocs/js/main.js');
  *
  */
-
+app('view')->prependNamespace('patent', resource_path('views/patent'));
 Encore\Admin\Form::forget(['map', 'editor']);
