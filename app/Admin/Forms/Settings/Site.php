@@ -14,7 +14,7 @@ class Site extends Form
      *
      * @var string
      */
-    public $title = '基本配置';
+    public $title = '基本设置';
     /**
      * 配置类型
      * @var string
@@ -45,10 +45,8 @@ class Site extends Form
         $this->text('site-copyright','底部版权信息');
         $this->text('site-icp','备案号');
         //$this->textarea('site-statistics','统计代码');
+        $this->setData();
         $this->disableReset();
-        if(request()->getMethod() == 'GET'){
-            $this->setData();
-        }
     }
 
     /**
@@ -56,6 +54,8 @@ class Site extends Form
      */
     protected function setData()
     {
-        $this->data =Config::getConfig($this->type)->toArray();
+        if(request()->getMethod() == 'GET'){
+            $this->data =Config::getConfig($this->type)->toArray();
+        }
     }
 }

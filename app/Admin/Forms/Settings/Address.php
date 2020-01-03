@@ -14,15 +14,17 @@ class Address extends Form
      *
      * @var string
      */
-    public $title = '联系方式';
-    public $type ='company';
+    public $title = '联系方式设置';
+    public $type ='contact';
+
+    /**
+     * 提交处理数据
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|mixed
+     */
     public function handle(Request $request)
     {
-        $data  = $request->except(['company_qr_code']);
-        if($request->has('company_qr_code')){
-            $data['company_qr_code'] = $request->file('company_qr_code')->store('images','public');
-        }
-        Config::createOrUpdate(collect($data),$this->type);
+        Config::createOrUpdate(collect($request->all()),$this->type);
         admin_toastr('设置成功','success');
         return back();
     }
@@ -32,16 +34,16 @@ class Address extends Form
         $this->text('company_tel','公司电话');
         $this->text('company_email','公司邮箱');
         $this->text('company_address','公司地址');
-        $this->image('company_qr_code','二维码');
+        $this->image('company_qr_code','公众号二维码');
         $this->disableReset();
-        if(request()->getMethod() == 'GET'){
-            $this->setData();
-        }
+        $this->setData();
     }
 
     protected function setData()
     {
-        $this->data =Config::getConfig($this->type)->toArray();
+        if(request()->getMethod() == 'GET'){
+            $this->data =Config::getConfig($this->type)->toArray();
+        }
     }
 
 }
