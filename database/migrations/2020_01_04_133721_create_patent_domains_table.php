@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePatentCategoriesTable extends Migration
+class CreatePatentDomainsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreatePatentCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('patent_categories', function (Blueprint $table) {
+        Schema::create('patent_domains', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name',100)->comment('名称');
-            $table->string('cat_sn',30)->comment('唯一编号');
-            $table->mediumInteger('pid')->default(0)->comment('父类ID');
+            $table->string('cat_sn',30)->comment('分类编号');
+            $table->smallInteger('sort')->default(0)->comment('排序');
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class CreatePatentCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('patent_categories');
+        Schema::dropIfExists('patent_domains');
     }
 }

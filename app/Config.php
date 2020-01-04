@@ -24,7 +24,7 @@ class Config extends Model
         $createData = $collection->map(function($value,$name)use($type,$oldNames){
             //如果是文件，保存文件，返回地址
             if($value instanceof UploadedFile){
-                $value = self::putFile($value);
+                $value = self::putFile($value,$name);
             }
             if(!$oldNames->has($name)){
                 return [
@@ -43,8 +43,12 @@ class Config extends Model
         }
     }
 
-    public static function putFile(UploadedFile $file)
+    public static function putFile(UploadedFile $file,$name=null)
     {
+        if($name){
+            $name.='.png';
+            return $file->storeAs('images',$name,'public');
+        }
         return $file->store('images','public');
     }
 

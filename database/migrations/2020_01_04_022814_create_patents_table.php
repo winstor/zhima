@@ -22,7 +22,7 @@ class CreatePatentsTable extends Migration
             $table->mediumInteger('college_id')->default(0)->comment('高校ID');
             $table->string('Patent_person')->comment('申请人专利权人');
             $table->string('inventor',100)->nullable()->comment('发明人设计人');
-            $table->integer('patent_category_id')->comment('领域ID');
+            $table->integer('patent_domain_id')->comment('领域ID');
             $table->integer('patent_type_id')->comment('类型ID');
             $table->integer('patent_state_id')->comment('专利状态ID');
             $table->integer('cert_state_id')->comment('下证状态ID');
@@ -34,10 +34,16 @@ class CreatePatentsTable extends Migration
             $table->tinyInteger('monitor_state')->default(0)->comment('监控状态');
             $table->timestamp('monitor_date')->nullable()->comment('监控到期时间');
             $table->text('fee_remark')->comment('年费备注');
-
-
-
             $table->timestamps();
+            //索引
+            $table->index('user_id','用户ID');
+            $table->index('electron_user_id','电子账户ID');
+            $table->index('college_id','高校ID');
+            $table->index('patent_type_id','类型ID');
+            $table->index('patent_state_id','专利状态ID');
+            $table->index('cert_state_id','下证状态ID');
+            $table->index('patent_domain_id','领域ID');
+
         });
     }
 

@@ -34,7 +34,7 @@ class Address extends Form
         $this->text('company_tel','公司电话');
         $this->text('company_email','公司邮箱');
         $this->text('company_address','公司地址');
-        $this->image('company_qr_code','公众号二维码');
+        $this->image('company_qr_code','底部二维码');
         $this->disableReset();
         $this->setData();
     }
