@@ -11,7 +11,7 @@ return [
     | login page.
     |
     */
-    'name' => 'Patent',
+    'name' => 'Members',
 
     /*
     |--------------------------------------------------------------------------
@@ -48,11 +48,11 @@ return [
     */
     'route' => [
 
-        'prefix' => 'patent',
+        'prefix' => 'members',
 
-        'namespace' => 'App\\Patent\\Controllers',
+        'namespace' => 'App\\Members\\Controllers',
 
-        'middleware' => ['web', 'admin','multi-session:path,/patent'],
+        'middleware' => ['web', 'admin','multi-session:path,/members'],
     ],
 
     /*
@@ -65,7 +65,7 @@ return [
     | be set before running `artisan admin::install` to take effect.
     |
     */
-    'directory' => app_path('Patent'),
+    'directory' => app_path('Members'),
 
     /*
     |--------------------------------------------------------------------------
@@ -75,7 +75,7 @@ return [
     | Html title for all pages.
     |
     */
-    'title' => 'patent',
+    'title' => 'members',
 
     /*
     |--------------------------------------------------------------------------
@@ -100,7 +100,7 @@ return [
     */
     'auth' => [
 
-        'controller' => App\Patent\Controllers\AuthController::class,
+        'controller' => App\Members\Controllers\AuthController::class,
 
         'guards' => [
             'admin' => [
@@ -152,27 +152,27 @@ return [
         'connection' => '',
 
         // User tables and model.
-        'users_table' => 'patent_users',
+        'users_table' => 'member_users',
         'users_model' => Encore\Admin\Auth\Database\Administrator::class,
 
         // Role table and model.
-        'roles_table' => 'patent_roles',
+        'roles_table' => 'member_roles',
         'roles_model' => Encore\Admin\Auth\Database\Role::class,
 
         // Permission table and model.
-        'permissions_table' => 'patent_permissions',
+        'permissions_table' => 'member_permissions',
         'permissions_model' => Encore\Admin\Auth\Database\Permission::class,
 
         // Menu table and model.
-        'menu_table' => 'patent_menu',
+        'menu_table' => 'member_menu',
         'menu_model' => Encore\Admin\Auth\Database\Menu::class,
 
         // Pivot table for table above.
-        'operation_log_table'    => 'patent_operation_log',
-        'user_permissions_table' => 'patent_user_permissions',
-        'role_users_table'       => 'patent_role_users',
-        'role_permissions_table' => 'patent_role_permissions',
-        'role_menu_table'        => 'patent_role_menu',
+        'operation_log_table'    => 'member_operation_log',
+        'user_permissions_table' => 'member_user_permissions',
+        'role_users_table'       => 'member_role_users',
+        'role_permissions_table' => 'member_role_permissions',
+        'role_menu_table'        => 'member_role_menu',
     ],
 
     /*

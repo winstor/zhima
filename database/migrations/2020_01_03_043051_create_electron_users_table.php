@@ -15,9 +15,11 @@ class CreateElectronUsersTable extends Migration
     {
         Schema::create('electron_users', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id',11)->comment('用户ID');
+            $table->integer('user_id')->comment('用户ID');
             $table->string('username',100)->comment('账户');
             $table->string('password',100)->comment('密码');
+            $table->tinyInteger('state')->default(1)->comment('状态');
+            $table->text('remark')->comment('备注');
             $table->timestamps();
             $table->index('user_id');
         });

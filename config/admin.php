@@ -290,7 +290,7 @@ return [
     | "sidebar-mini".
     |
     */
-    'layout' => ['sidebar-mini', 'sidebar-collapse'],
+    'layout' => ['sidebar-mini', 'fixed'],
 
     /*
     |--------------------------------------------------------------------------
@@ -399,7 +399,8 @@ return [
         'multitenancy' => [
             'tenancy' => config_path('tenancy.php'),
             // 增加下面一行
-            'patent' => config_path('patent.php'),
+            //'patent' => config_path('patent.php'),
+            'member' => config_path('member.php'),
         ]
     ],
 ];

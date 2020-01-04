@@ -15,14 +15,14 @@ class CreatePatentCategoriesTable extends Migration
     {
         Schema::create('patent_categories', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name',100)->comment('名称');
-            $table->smallInteger('number')->comment('编号数字');
-            $table->string('logo',100)->nullable()->comment('logo图');
-            $table->integer('sort',6)->default(0)->comment('排序');
+            $table->string('cat_name',100)->comment('名称');
+            $table->smallInteger('cat_number')->comment('编号数字');
+            $table->string('logo',100)->nullable()->comment('logo');
+            $table->smallInteger('sort')->default(0)->comment('排序');
 
             $table->string('full_name',100)->nullable()->comment('全称');
-            $table->string('sid',100)->nullable()->comment('唯一编号');
-            $table->integer('pid',11)->default(0)->comment('父类ID');
+            $table->string('cat_sn',100)->nullable()->comment('唯一编号');
+            $table->integer('pid')->default(0)->comment('父类ID');
             $table->timestamps();
         });
     }

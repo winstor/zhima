@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePatentTables extends Migration
+class CreateMemberTables extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreatePatentTables extends Migration
      */
     public function up()
     {
-        $connection = config('patent.database.connection') ?: config('database.default');
+        $connection = config('member.database.connection') ?: config('database.default');
 
-        Schema::connection($connection)->create(config('patent.database.users_table'), function (Blueprint $table) {
+        Schema::connection($connection)->create(config('member.database.users_table'), function (Blueprint $table) {
             $table->increments('id');
             $table->string('username', 190)->unique();
             $table->string('password', 60);
@@ -25,14 +25,14 @@ class CreatePatentTables extends Migration
             $table->timestamps();
         });
 
-        Schema::connection($connection)->create(config('patent.database.roles_table'), function (Blueprint $table) {
+        Schema::connection($connection)->create(config('member.database.roles_table'), function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 50)->unique();
             $table->string('slug', 50);
             $table->timestamps();
         });
 
-        Schema::connection($connection)->create(config('patent.database.permissions_table'), function (Blueprint $table) {
+        Schema::connection($connection)->create(config('member.database.permissions_table'), function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 50)->unique();
             $table->string('slug', 50);
@@ -41,7 +41,7 @@ class CreatePatentTables extends Migration
             $table->timestamps();
         });
 
-        Schema::connection($connection)->create(config('patent.database.menu_table'), function (Blueprint $table) {
+        Schema::connection($connection)->create(config('member.database.menu_table'), function (Blueprint $table) {
             $table->increments('id');
             $table->integer('parent_id')->default(0);
             $table->integer('order')->default(0);
@@ -52,35 +52,35 @@ class CreatePatentTables extends Migration
             $table->timestamps();
         });
 
-        Schema::connection($connection)->create(config('patent.database.role_users_table'), function (Blueprint $table) {
+        Schema::connection($connection)->create(config('member.database.role_users_table'), function (Blueprint $table) {
             $table->integer('role_id');
             $table->integer('user_id');
             $table->index(['role_id', 'user_id']);
             $table->timestamps();
         });
 
-        Schema::connection($connection)->create(config('patent.database.role_permissions_table'), function (Blueprint $table) {
+        Schema::connection($connection)->create(config('member.database.role_permissions_table'), function (Blueprint $table) {
             $table->integer('role_id');
             $table->integer('permission_id');
             $table->index(['role_id', 'permission_id']);
             $table->timestamps();
         });
 
-        Schema::connection($connection)->create(config('patent.database.user_permissions_table'), function (Blueprint $table) {
+        Schema::connection($connection)->create(config('member.database.user_permissions_table'), function (Blueprint $table) {
             $table->integer('user_id');
             $table->integer('permission_id');
             $table->index(['user_id', 'permission_id']);
             $table->timestamps();
         });
 
-        Schema::connection($connection)->create(config('patent.database.role_menu_table'), function (Blueprint $table) {
+        Schema::connection($connection)->create(config('member.database.role_menu_table'), function (Blueprint $table) {
             $table->integer('role_id');
             $table->integer('menu_id');
             $table->index(['role_id', 'menu_id']);
             $table->timestamps();
         });
 
-        Schema::connection($connection)->create(config('patent.database.operation_log_table'), function (Blueprint $table) {
+        Schema::connection($connection)->create(config('member.database.operation_log_table'), function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');
             $table->string('path');
@@ -99,16 +99,16 @@ class CreatePatentTables extends Migration
      */
     public function down()
     {
-        $connection = config('patent.database.connection') ?: config('database.default');
+        $connection = config('member.database.connection') ?: config('database.default');
 
-        Schema::connection($connection)->dropIfExists(config('patent.database.users_table'));
-        Schema::connection($connection)->dropIfExists(config('patent.database.roles_table'));
-        Schema::connection($connection)->dropIfExists(config('patent.database.permissions_table'));
-        Schema::connection($connection)->dropIfExists(config('patent.database.menu_table'));
-        Schema::connection($connection)->dropIfExists(config('patent.database.user_permissions_table'));
-        Schema::connection($connection)->dropIfExists(config('patent.database.role_users_table'));
-        Schema::connection($connection)->dropIfExists(config('patent.database.role_permissions_table'));
-        Schema::connection($connection)->dropIfExists(config('patent.database.role_menu_table'));
-        Schema::connection($connection)->dropIfExists(config('patent.database.operation_log_table'));
+        Schema::connection($connection)->dropIfExists(config('member.database.users_table'));
+        Schema::connection($connection)->dropIfExists(config('member.database.roles_table'));
+        Schema::connection($connection)->dropIfExists(config('member.database.permissions_table'));
+        Schema::connection($connection)->dropIfExists(config('member.database.menu_table'));
+        Schema::connection($connection)->dropIfExists(config('member.database.user_permissions_table'));
+        Schema::connection($connection)->dropIfExists(config('member.database.role_users_table'));
+        Schema::connection($connection)->dropIfExists(config('member.database.role_permissions_table'));
+        Schema::connection($connection)->dropIfExists(config('member.database.role_menu_table'));
+        Schema::connection($connection)->dropIfExists(config('member.database.operation_log_table'));
     }
 }

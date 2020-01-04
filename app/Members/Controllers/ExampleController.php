@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Patent\Controllers;
+namespace App\Members\Controllers;
 
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;

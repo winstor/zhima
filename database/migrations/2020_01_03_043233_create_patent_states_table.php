@@ -16,6 +16,7 @@ class CreatePatentStatesTable extends Migration
         Schema::create('patent_states', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name',100)->comment('专利状态');
+            $table->smallInteger('cert_state_id')->default(0)->comment('下证状态');
             $table->timestamps();
         });
     }
