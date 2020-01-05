@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Config extends Model
 {
+    const IMAGE_TYPE= ['png','jpg','jpeg','gif','ico'];
     /**
      * 创建或更新配置项
      * @param Collection $collection
@@ -24,7 +25,12 @@ class Config extends Model
         $createData = $collection->map(function($value,$name)use($type,$oldNames){
             //如果是文件，保存文件，返回地址
             if($value instanceof UploadedFile){
-                $value = self::putFile($value,$name);
+                $extension = $value->guessExtension();
+                if(in_array($extension,self::IMAGE_TYPE)){
+                    $extension = 'png';
+                }
+                $filename = $name.'.'.$extension;
+                $value =  $value->storeAs('images/'.$type,$filename,'public');
             }
             if(!$oldNames->has($name)){
                 return [
@@ -42,16 +48,6 @@ class Config extends Model
             DB::table('configs')->insert($createData);
         }
     }
-
-    public static function putFile(UploadedFile $file,$name=null)
-    {
-        if($name){
-            $name.='.png';
-            return $file->storeAs('images',$name,'public');
-        }
-        return $file->store('images','public');
-    }
-
     /**
      * 获取配置项
      * @param null $type
