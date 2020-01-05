@@ -23,6 +23,8 @@ use Encore\Admin\Form;
 app('view')->prependNamespace('admin', resource_path('views/admin'));
 
 Encore\Admin\Form::forget(['map', 'editor']);
+Encore\Admin\Form::extend('editor', App\Admin\Extensions\Ueditor::class);
+Encore\Admin\Form::extend('ckeditor', App\Admin\Extensions\Form\CKEditor::class);
 
 Grid::init(function(Grid $grid){
     $grid->actions(function (Grid\Displayers\Actions $actions) {

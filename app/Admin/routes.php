@@ -27,6 +27,9 @@ Route::group([
     $router->resource('colleges', 'CollegeController');
     //电子用户、数字证书
     $router->resource('electron-users', 'ElectronUserController')->only(['index','destroy']);
+    //文章
+    $router->resource('articles', 'ArticleController');
+
 
 
 
