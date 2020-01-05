@@ -36,7 +36,7 @@ class PatentDomainController extends AdminController
         $grid->column('created_at', __('admin.created_at'));
         $grid->column('updated_at', __('admin.updated_at'));
         $grid->disableFilter();
-        $grid->disableBatchActions();
+        //$grid->disableBatchActions();
         return $grid;
     }
 

@@ -19,6 +19,17 @@ Route::group([
     $router->resource('patent-categories','PatentCategoryController');
     //专利类型
     $router->resource('patent-types', 'PatentTypeController');
+    //专利状态
+    $router->resource('patent-states', 'PatentStateController');
+    //专利管理
+    $router->resource('patents', 'PatentController')->only(['index','show','destroy']);
+    //高校
+    $router->resource('colleges', 'CollegeController');
+    //电子用户、数字证书
+    $router->resource('electron-users', 'ElectronUserController')->only(['index','destroy']);
+
+
+
 
 
 
