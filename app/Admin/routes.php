@@ -9,8 +9,12 @@ Route::group([
     'namespace'     => config('admin.route.namespace'),
     'middleware'    => config('admin.route.middleware'),
 ], function (Router $router) {
-
+    ///test
+    $router->get('/export', 'HomeController@export')->name('admin.export');
+    $router->get('chart','ChartjsController@index');
+    ////////////////////////////////////////////////////////////////
     $router->get('/', 'HomeController@index')->name('admin.home');
+
     //配置项
     $router->resource('configs', 'ConfigController');
     //热门领域

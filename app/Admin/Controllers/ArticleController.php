@@ -2,6 +2,8 @@
 
 namespace App\Admin\Controllers;
 
+use App\Admin\Extensions\ExcelExporter;
+use App\Admin\Extensions\Export\ArticleExporter;
 use App\Admin\Extensions\Ueditor;
 use App\Article;
 use Encore\Admin\Controllers\AdminController;
@@ -32,7 +34,7 @@ class ArticleController extends AdminController
         $grid->column('type', __('类型'))->using(Article::TYPE);
         $grid->column('created_at', __('admin.created_at'));
         $grid->column('updated_at', __('admin.updated_at'));
-
+        $grid->exporter(new ArticleExporter());
         return $grid;
     }
 
@@ -76,7 +78,6 @@ class ArticleController extends AdminController
         $form->image('logo', __('Logo'));
         $form->textarea('desc', __('简介'));
         $form->editor('content', __('内容'));
-
         return $form;
     }
 }

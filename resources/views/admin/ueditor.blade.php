@@ -5,6 +5,6 @@
     <div class="{{$viewClass['field']}}">
         @include('admin::form.error')
 
-        <script id="container" name="{{$name}}" type="text/plain">{!! old($column, $value) !!}</script>
+        <script id="{{$id}}" name="{{$name}}" type="text/plain">{!! old($column, $value) !!}</script>
     </div>
 </div>
