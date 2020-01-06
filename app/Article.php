@@ -15,4 +15,8 @@ class Article extends Model
         'case'=>'典型案例'
     ];
     //
+    public function type()
+    {
+        return $this->belongsTo(ArticleType::class,'article_type_id');
+    }
 }

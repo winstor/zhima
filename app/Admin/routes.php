@@ -33,6 +33,8 @@ Route::group([
     $router->resource('electron-users', 'ElectronUserController')->only(['index','destroy']);
     //文章
     $router->resource('articles', 'ArticleController');
+    $router->resource('article-types', 'ArticleTypeController');
+
     //友情链接
     $router->resource('friend-links', 'FriendLinkController');
     //关键字
