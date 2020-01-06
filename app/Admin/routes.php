@@ -39,6 +39,12 @@ Route::group([
     $router->resource('friend-links', 'FriendLinkController');
     //关键字
     $router->resource('keywords', 'KeywordController');
+    //会员管理
+    $router->resource('members', 'MemberController');
+    $router->resource('member-reals', 'MemberRealController');
+
+
+
 
 
 
