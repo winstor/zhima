@@ -20,7 +20,7 @@ class Config extends Model
     public static function createOrUpdate(Collection $collection, $type)
     {
         //获取已有配置名称
-        $oldNames = self::where('type',$type)->pluck('name');
+        $oldNames = self::where('type',$type)->pluck('name','name');
         //配置项更新
         $createData = $collection->map(function($value,$name)use($type,$oldNames){
             //如果是文件，保存文件，返回地址
