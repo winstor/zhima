@@ -26,7 +26,7 @@ class MemberController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new Member());
-
+        $grid->model()->orderBy('id','desc');
         $grid->column('id', __('Id'));
         $grid->column('username', __('账号/姓名'))->display(function($username){
             return $username.'<br/>'.$this->name;
@@ -36,12 +36,9 @@ class MemberController extends AdminController
             return $mobile.'<br/>'.$this->email;
         });
         $grid->column('address', __('详细地址'));
-        $grid->column('real_state', __('是否认证'))->display(function($real_state){
-            $real = data_get(['未认证','已认证','认证失败','待审核'],$real_state);
-            $real_state and $real =  $real.'<br/>'.data_get(['个人认证','公司认证'],$this->real_type);
-            return $real;
-
-        });
+        $grid->column('real_state', __('是否认证'))
+            ->using(['未认证','已认证','认证失败','待审核'],'')
+            ->dot(['default','success','default','danger'])->sortable();
         $grid->column('created_at', __('注册时间'));
         $grid->column('updated_at', __('admin.updated_at'));
         Admin::script('$("td").css("vertical-align","middle")');

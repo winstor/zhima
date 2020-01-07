@@ -112,7 +112,7 @@ return [
         'providers' => [
             'admin' => [
                 'driver' => 'eloquent',
-                'model'  => \App\Member::class,
+                'model'  => Encore\Admin\Auth\Database\Administrator::class,
             ],
         ],
     ],
@@ -153,7 +153,7 @@ return [
 
         // User tables and model.
         'users_table' => 'member_users',
-        'users_model' => \App\Member::class,
+        'users_model' => Encore\Admin\Auth\Database\Administrator::class,
 
         // Role table and model.
         'roles_table' => 'member_roles',
@@ -185,7 +185,7 @@ return [
     */
     'operation_log' => [
 
-        'enable' => true,
+        'enable' => false,
 
         /*
          * Only logging allowed methods in the list
