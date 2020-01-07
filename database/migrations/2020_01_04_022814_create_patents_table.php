@@ -35,6 +35,7 @@ class CreatePatentsTable extends Migration
             $table->timestamp('monitor_date')->nullable()->comment('监控到期时间');
             $table->text('fee_remark')->nullable()->comment('年费备注');
             $table->timestamps();
+            $table->softDeletes();
             //索引
             $table->index('user_id','用户ID');
             $table->index('electron_user_id','电子账户ID');

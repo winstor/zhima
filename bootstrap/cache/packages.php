@@ -1,4 +1,26 @@
 <?php return array (
+  'barryvdh/laravel-dompdf' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Barryvdh\\DomPDF\\ServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'PDF' => 'Barryvdh\\DomPDF\\Facade',
+    ),
+  ),
+  'chumper/zipper' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Chumper\\Zipper\\ZipperServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'Zipper' => 'Chumper\\Zipper\\Zipper',
+    ),
+  ),
   'encore/laravel-admin' => 
   array (
     'providers' => 

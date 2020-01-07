@@ -3,9 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Patent extends Model
 {
+    use SoftDeletes;
     protected $dates = ['apply_date'];
     const CERT_STATE = ['1'=>'审查中','2'=>'授权未交费','3'=>'已下证'];
     //

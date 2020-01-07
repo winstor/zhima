@@ -6,6 +6,8 @@
     "type": "project",
     "require": {
         "php": ">=7.0.0",
+        "barryvdh/laravel-dompdf": "^0.8.5",
+        "chumper/zipper": "1.0.x",
         "encore/laravel-admin": "^1.7",
         "fideloper/proxy": "~3.3",
         "jaeger/querylist": "^4.1",
