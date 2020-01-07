@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers;
 
 use App\PatentType;
+use Encore\Admin\Admin;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -28,9 +29,10 @@ class PatentTypeController extends AdminController
 
         $grid->column('id', __('ID'));
         $grid->column('name', __('专利类型'));
-        $grid->column('logo', __('Logo'))->image();
+        $grid->column('logo', __('Logo'))->image('/',40,20);
         $grid->column('created_at', __('admin.created_at'));
         $grid->column('updated_at', __('admin.updated_at'));
+        Admin::script('$("td").css("vertical-align","middle")');
         $grid->disableFilter();
         //$grid->disableBatchActions();
         return $grid;

@@ -4,6 +4,7 @@ namespace App\Admin\Controllers;
 
 use App\Patent;
 use Carbon\Carbon;
+use Encore\Admin\Admin;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -26,6 +27,10 @@ class PatentController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new Patent);
+        $grid->filter(function(Grid\Filter $filter){
+            $filter->disableIdFilter();
+            $filter->equal('patent_sn','专利号');
+        });
         //$grid->column('id', __('ID'));
         $grid->model()->with(['type','domain','state','college','member']);
         $grid->column('patent_sn', __('专利信息'))->display(function($patent_sn){
@@ -60,6 +65,7 @@ class PatentController extends AdminController
         });
         //$grid->column('updated_at', __('admin.updated_at'));
         $grid->disableCreateButton();
+        Admin::script('$("td").css("vertical-align","middle")');
         return $grid;
     }
 
