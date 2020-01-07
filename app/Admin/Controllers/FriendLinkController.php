@@ -33,6 +33,8 @@ class FriendLinkController extends AdminController
         $grid->column('logo', __('Logo'))->image();
         $grid->column('created_at', __('admin.created_at'));
         $grid->column('updated_at', __('admin.updated_at'));
+        $grid->disableFilter();
+
         Admin::script('$("td").css("vertical-align","middle")');
 
         return $grid;

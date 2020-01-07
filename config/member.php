@@ -52,7 +52,7 @@ return [
 
         'namespace' => 'App\\Members\\Controllers',
 
-        'middleware' => ['web', 'admin','multi-session:path,/members'],
+        'middleware' => ['enable_route_permission','web', 'admin','multi-session:path,/members'],
     ],
 
     /*
@@ -112,7 +112,7 @@ return [
         'providers' => [
             'admin' => [
                 'driver' => 'eloquent',
-                'model'  => Encore\Admin\Auth\Database\Administrator::class,
+                'model'  => \App\Member::class,
             ],
         ],
     ],
@@ -153,7 +153,7 @@ return [
 
         // User tables and model.
         'users_table' => 'member_users',
-        'users_model' => Encore\Admin\Auth\Database\Administrator::class,
+        'users_model' => \App\Member::class,
 
         // Role table and model.
         'roles_table' => 'member_roles',
@@ -227,7 +227,7 @@ return [
     |    "skin-red", "skin-red-light", "skin-black", "skin-black-light".
     |
     */
-    'skin' => 'skin-blue-light',
+    'skin' => 'skin-red-light',
 
     /*
     |--------------------------------------------------------------------------
@@ -241,7 +241,7 @@ return [
     | "sidebar-mini".
     |
     */
-    'layout' => ['sidebar-mini', 'sidebar-collapse'],
+    'layout' => ['sidebar-mini', 'fixed'],
 
     /*
     |--------------------------------------------------------------------------
@@ -262,7 +262,7 @@ return [
     | each page
     |
     */
-    'show_version' => true,
+    'show_version' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -272,7 +272,7 @@ return [
     | Whether to display the environment at the footer of each page
     |
     */
-    'show_environment' => true,
+    'show_environment' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -281,7 +281,7 @@ return [
     |
     | whether enable menu bind to a permission
     */
-    'menu_bind_permission' => true,
+    'menu_bind_permission' => false,
 
     /*
     |--------------------------------------------------------------------------

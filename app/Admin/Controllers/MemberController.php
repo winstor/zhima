@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers;
 
 use App\Member;
+use Encore\Admin\Admin;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -43,7 +44,7 @@ class MemberController extends AdminController
         });
         $grid->column('created_at', __('注册时间'));
         $grid->column('updated_at', __('admin.updated_at'));
-
+        Admin::script('$("td").css("vertical-align","middle")');
         return $grid;
     }
 
@@ -57,23 +58,6 @@ class MemberController extends AdminController
     {
         $show = new Show(Member::findOrFail($id));
 
-        $show->field('id', __('Id'));
-        $show->field('username', __('Username'));
-        $show->field('password', __('Password'));
-        $show->field('name', __('Name'));
-        $show->field('avatar', __('Avatar'));
-        $show->field('remember_token', __('Remember token'));
-        $show->field('created_at', __('Created at'));
-        $show->field('updated_at', __('Updated at'));
-        $show->field('mobile', __('Mobile'));
-        $show->field('phone', __('Phone'));
-        $show->field('email', __('Email'));
-        $show->field('qq', __('Qq'));
-        $show->field('address', __('Address'));
-        $show->field('sex', __('Sex'));
-        $show->field('birthday', __('Birthday'));
-        $show->field('real_state', __('Real state'));
-        $show->field('real_type', __('Real type'));
 
         return $show;
     }
