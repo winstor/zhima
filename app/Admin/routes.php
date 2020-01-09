@@ -42,6 +42,9 @@ Route::group([
     //会员管理
     $router->resource('members', 'MemberController');
     $router->resource('member-reals', 'MemberRealController');
+    //售卖记录
+    $router->resource('patent-sales', 'PatentSaleController');
+
 
 
 

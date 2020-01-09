@@ -37,6 +37,7 @@ class CollegeController extends AdminController
         Admin::script('$("td").css("vertical-align","middle")');
 
         $grid->disableFilter();
+        $grid->disableExport();
         return $grid;
     }
 

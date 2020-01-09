@@ -38,6 +38,7 @@ class ArticleController extends AdminController
         $grid->column('updated_at', __('admin.updated_at'));
         $grid->exporter(new ArticleExporter());
         $grid->disableFilter();
+        $grid->disableExport();
         return $grid;
     }
 

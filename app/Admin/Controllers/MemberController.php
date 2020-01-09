@@ -42,6 +42,9 @@ class MemberController extends AdminController
         $grid->column('created_at', __('注册时间'));
         $grid->column('updated_at', __('admin.updated_at'));
         Admin::script('$("td").css("vertical-align","middle")');
+        $grid->disableExport();
+        $grid->disableFilter();
+        $grid->disableRowSelector();
         return $grid;
     }
 

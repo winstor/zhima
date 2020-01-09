@@ -34,6 +34,7 @@ class PatentTypeController extends AdminController
         $grid->column('updated_at', __('admin.updated_at'));
         Admin::script('$("td").css("vertical-align","middle")');
         $grid->disableFilter();
+        $grid->disableExport();
         //$grid->disableBatchActions();
         return $grid;
     }

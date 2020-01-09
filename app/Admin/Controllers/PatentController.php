@@ -3,6 +3,8 @@
 namespace App\Admin\Controllers;
 
 use App\Patent;
+use App\PatentDomain;
+use App\PatentType;
 use Carbon\Carbon;
 use Encore\Admin\Admin;
 use Encore\Admin\Controllers\AdminController;
@@ -29,7 +31,28 @@ class PatentController extends AdminController
         $grid = new Grid(new Patent);
         $grid->filter(function(Grid\Filter $filter){
             $filter->disableIdFilter();
-            $filter->equal('patent_sn','专利号');
+            $filter->column(1/3, function (Grid\Filter $filter) {
+                $filter->equal('patent_sn','专利号');
+                $filter->equal('patent_type_id','专利类型')->select(PatentType::pluck('name','id'));
+            });
+            $filter->column(1/3, function (Grid\Filter $filter) {
+                $filter->where(function ($query) {
+                    $query->whereHas('member', function ($query) {
+                        $query->where('username', "{$this->input}")->orWhere('name', "{$this->input}");
+                    });
+
+                }, '会员名');
+                $filter->equal('is_monitor','监控状态')->select(['未监控','监控中']);
+            });
+            $filter->column(1/3, function (Grid\Filter $filter) {
+                $filter->where(function ($query) {
+                    $query->whereHas('member', function ($query) {
+                        $query->where('mobile', "{$this->input}");
+                    });
+
+                }, '会员电话');
+                $filter->equal('patent_domain_id','热门领域')->select(PatentDomain::pluck('name','id'));
+            });
         });
         //$grid->column('id', __('ID'));
         $grid->model()->with(['type','domain','state','college','member']);
@@ -44,10 +67,7 @@ class PatentController extends AdminController
         });
         $grid->column('member', __('会员姓名/电话'))->display(function($member){
             if($member){
-                $name = $member['name']??'';
-                $name or $name = $member['username']??'';
-                $mobile= $member['mobile']??'';
-                return $name.'<br/>'.$mobile;
+                return $member['username'].'<br/>'.$member['mobile'];
             }
             return '';
 
