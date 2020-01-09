@@ -16,6 +16,7 @@ class CreatePatentSalesTable extends Migration
         Schema::create('patent_sales', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->comment('用户ID');
+            $table->integer('patent_id')->comment('专利ID');
             $table->string('patent_sn')->comment('专利号');
             $table->string('patent_name')->comment('专利名称');
             $table->string('patent_person',50)->comment('申请人专利权人');
