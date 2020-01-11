@@ -30,7 +30,9 @@ class ArticleTypeController extends AdminController
         $grid->column('name', __('文章类型'));
         $grid->column('created_at', __('admin.created_at'));
         $grid->column('updated_at', __('admin.updated_at'));
-
+        $grid->disableColumnSelector();
+        $grid->disableExport();
+        $grid->disableFilter();
         return $grid;
     }
 

@@ -22,7 +22,7 @@ return [
     | `img` tag, eg '<img src="http://logo-url" alt="Admin logo">'.
     |
     */
-    'logo' => '<b>Laravel</b> admin',
+    'logo' => '<b>芝麻</b> 知识产权',
 
     /*
     |--------------------------------------------------------------------------
@@ -307,6 +307,12 @@ return [
     | the extension files will be generated in this directory.
     */
     'extension_dir' => app_path('Admin/Extensions'),
+    /*
+    |--------------------------------------------------------------------------
+    | Enable/Disable sidebar menu search
+    |--------------------------------------------------------------------------
+    */
+    'enable_menu_search' => true,
 
     /*
     |--------------------------------------------------------------------------

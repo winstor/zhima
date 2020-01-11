@@ -60,4 +60,11 @@ class Config extends Model
         }
         return self::pluck('value','name');
     }
+    public static function getConfigValue($name,$type=null)
+    {
+        if($type){
+            return self::where('type',$type)->where('name',$name)->value('value');
+        }
+        return self::where('name',$name)->value('value');
+    }
 }

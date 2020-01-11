@@ -10,6 +10,8 @@
     @yield('style')
 </head>
 <body>
+
+
 <header>
     <div class="top">
         <!--顶部信息条-->
@@ -20,7 +22,8 @@
                         您好，jiaowb123，欢迎来到芝麻知识产权服务平台  &nbsp; |   &nbsp;<a href="/members/">个人中心</a> &nbsp;  <a href="/members/LogOut.html">退出</a>
                     </div>
                     <div class="top_right">
-                        <a href="/contact/">&nbsp;企业位置 &nbsp;</a>
+                        <a href="/feedback/">在线留言 &nbsp;</a>
+                        <a href="/contact/">|&nbsp;企业位置 &nbsp;</a>
                     </div>
                 </div>
             </div>
@@ -36,12 +39,13 @@
                     <ul>
                         <li><a href="/">网站首页</a></li>
                         <li><a href="/about">公司简介</a></li>
-                        <li><a href="/bargain">特价专利</a></li>
+                        <li><a href="/supply/tejia">特价专利</a></li>
                         <li><a href="/supply">专利超市</a></li>
                         <li><a href="/business">业务领域</a></li>
                         <li><a href="/news">新闻中心</a></li>
+                        <li><a href="/teams">专家团队</a></li>
                         <li><a href="/contact">联系我们</a></li>
-                        <li><a href="/members">会员中心</a></li>
+                        <li><a href="/members/requestList.html">年费监控</a></li>
                     </ul>
                 </div>
             </div>
@@ -57,15 +61,16 @@
             <div class="foot_nav">
                 <a href="/">网站首页</a>
                 <a href="/about">公司简介</a>
-                <a href="/bargain">特价专利</a>
+                <a href="/supply/tejia">特价专利</a>
                 <a href="/supply">专利超市</a>
                 <a href="/news">新闻中心</a>
+                <a href="/teams">专家团队</a>
                 <a href="/contact">联系我们</a>
             </div>
             <div class="xinxi">
-                <p style="top: 130px; left: 130px;">{{$configs['contact-tel']}}</p>
-                <p style="top: 130px; left: 535px;">{{$configs['contact-address']}} </p>
-                <p style="top: 130px; right: 5px;">{{$configs['contact-email']}}</p>
+                <p style="top: 130px; left: 130px;">0371-63302335</p>
+                <p style="top: 130px; left: 535px;">郑州市高新区长椿路与梧桐街交叉口河南省国家大学科技园孵化1号楼3A16 </p>
+                <p style="top: 130px; right: 5px;">zhimaipr@163.com</p>
             </div>
         </div>
     </div>
@@ -74,4 +79,3 @@
 @yield('script')
 </body>
 </html>
-

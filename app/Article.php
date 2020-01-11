@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Article extends Model
 {
@@ -10,7 +11,7 @@ class Article extends Model
         'about'=>'公司简介',
         'business'=>'业务领域',
         'news'=>'公司新闻',
-        'Industry'=>'行业动态',
+        'industry'=>'行业动态',
         'knowledge'=>'知识中心',
         'case'=>'典型案例'
     ];
