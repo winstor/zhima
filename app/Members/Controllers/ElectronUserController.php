@@ -33,15 +33,11 @@ class ElectronUserController extends AdminController
         $grid->column('created_at', __('admin.created_at'));
         $grid->column('updated_at', __('admin.updated_at'));
         $grid->disableFilter();
-        $grid->disableCreateButton();
         //$grid->disableActions();
         $grid->disableBatchActions();
         $grid->actions(function ($actions) {
             // 去掉删除
             $actions->disableDelete(false);
-            // 去掉编辑
-            $actions->disableEdit();
-
             // 去掉查看
             $actions->disableView();
         });
@@ -71,11 +67,17 @@ class ElectronUserController extends AdminController
     {
         $form = new Form(new ElectronUser);
 
-        $form->text('username', __('账号'));
-        $form->password('password', __('密码'));
+        $form->text('username', __('账号'))->required();
+        $form->password('password', __('密码'))->required();
         $form->textarea('remark', __('备注'));
-        $form->saving(function(){
-
+        $form->hidden('user_id');
+        $form->saving(function(Form $form){
+            $user = Member::user();
+            if(!$form->model()->id){
+                $form->user_id = $user->id;
+            }elseif($form->model()->user_id != $user->id){
+                return back();
+            }
         });
         return $form;
     }

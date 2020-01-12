@@ -8,3 +8,5 @@ Route::post('register', 'AuthController@postRegister')->name('members.register')
 
 //我的专利
 Route::resource('patents','PatentController');
+
+Route::resource('electron-accounts', 'ElectronUserController');
