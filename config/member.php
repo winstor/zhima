@@ -297,7 +297,12 @@ return [
     | Whether enable default breadcrumb for every page content.
     */
     'enable_default_breadcrumb' => true,
-
+    /*
+     |--------------------------------------------------------------------------
+     | The global Grid action display class.
+     |--------------------------------------------------------------------------
+     */
+    'grid_action_class' => \Encore\Admin\Grid\Displayers\DropdownActions::class,
     /*
     |--------------------------------------------------------------------------
     | Extension Directory

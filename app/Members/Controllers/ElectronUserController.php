@@ -34,7 +34,7 @@ class ElectronUserController extends AdminController
         $grid->column('updated_at', __('admin.updated_at'));
         $grid->disableFilter();
         //$grid->disableActions();
-        $grid->disableBatchActions();
+        //$grid->disableBatchActions();
         $grid->actions(function ($actions) {
             // 去掉删除
             $actions->disableDelete(false);
