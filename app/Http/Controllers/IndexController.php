@@ -19,7 +19,7 @@ class IndexController extends Controller
     //首页
     public function index()
     {
-        $news = $this->articleService->getIndexnews(3);
+        $news = $this->articleService->getLists([3,4,5,6],3,['id','logo','title','content','updated_at'],80);
         return view('index',compact('news'))->with($this->configs);
     }
 

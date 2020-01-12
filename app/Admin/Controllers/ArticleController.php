@@ -9,6 +9,8 @@ use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManagerStatic;
 
 class ArticleController extends AdminController
 {
@@ -30,7 +32,7 @@ class ArticleController extends AdminController
         $grid->selector(function (Grid\Tools\Selector $selector) {
             $selector->select('article_type_id', '文章类型', ArticleType::pluck('name','id'));
         });
-        $grid->model()->with('type');
+        $grid->model()->with('type')->orderBy('id','desc');
         $grid->column('id', __('ID'));
         $grid->column('title', __('文章标题'));
         $grid->column('type.name', __('类型'));
@@ -66,11 +68,14 @@ class ArticleController extends AdminController
 
         $form->text('title', __('标题'))->required();
         $form->select('article_type_id', __('类型'))->options(ArticleType::pluck('name','id'))->required();
-        //$form->text('author', __('作者'));
-        //$form->text('from', __('内容来源'));
         $form->image('logo', __('Logo'));
-        //$form->textarea('desc', __('简介'));
         $form->editor('content', __('内容'));
+        $form->saved(function($form){
+            if($form->logo){
+                $image = ImageManagerStatic::make($form->logo)->resize(350,245);
+                Storage::disk('public')->put($form->model()->logo,$image->encode());
+            }
+        });
         return $form;
     }
 }

@@ -38,13 +38,13 @@
             </div>
             <div class="sv_text" style="top: 410px; left: 120px;">
                 <p>
-                    <span>科技项目申报</span></p>
-                <p>高新技术企业认定、科技型中小企业、研发费用后补助等</p>
+                    <span>信息检索</span></p>
+                <p>检索分析、预警分析、评价报告、科技成果评价等</p>
             </div>
             <div class="sv_text" style="top: 410px; right: 26px;">
                 <p>
-                    <span>信息检索</span></p>
-                <p>检索分析、预警分析、评价报告、科技成果评价等</p>
+                    <span>科技项目申报</span></p>
+                <p>高新技术企业认定、科技型中小企业、研发费用后补助等</p>
             </div>
         </div>
     </div>
@@ -256,7 +256,7 @@
             <div class="news_box">
                 <div class="news_img">
                     <a href="{{route('article.show',[$new['id']])}}" target="_blank">
-                        <img width="350" height="245" src="{{\Illuminate\Support\Facades\Storage::disk('public')->url($new['logo'])}}" /></a>
+                        <img src="{{\Illuminate\Support\Facades\Storage::disk('public')->url($new['logo'])}}" /></a>
                 </div>
                 <div class="news_text">
                             <span><a href="{{route('article.show',[$new['id']])}}" target="_blank">

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Storage;
 
 class Article extends Model
 {
+
     const TYPE=[
         'about'=>'公司简介',
         'business'=>'业务领域',

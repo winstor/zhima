@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Article;
+use App\ArticleType;
 use App\Config;
 use App\Services\ArticleService;
 use Illuminate\Http\Request;
@@ -20,20 +21,23 @@ class ArticleController extends Controller
     public function about()
     {
         return view('about',[
-            'lists'=>$this->articleService->getArticle(1)
+            'lists'=>$this->articleService->getAll(1,3,'asc')
         ])->with($this->configs);
     }
     //业务领域
     public function business()
     {
         return view('business',[
-            'lists'=>$this->articleService->getArticle(2)
+            'lists'=>$this->articleService->getAll(2,4,'asc')
         ])->with($this->configs);
     }
     //新闻中心
-    public function news()
+    public function news($type=null)
     {
-        return view('news',[])->with($this->configs);
+        $type = $type?:3;
+        $lists = $this->articleService->getPaginateNews($type,8);
+        $types = ArticleType::whereIn('id',[3,4,5,6])->pluck('name','id');
+        return view('news',compact('lists','types','type'))->with($this->configs);
     }
     //联系我们
     public function contact()

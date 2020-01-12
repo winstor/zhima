@@ -19,8 +19,8 @@ Route::get('supply','IndexController@supply');
 Route::get('about','ArticleController@about');
 Route::get('business','ArticleController@business');
 Route::get('contact','ArticleController@contact');
-Route::get('news','ArticleController@news')->name('news');
-Route::get('news/{id}','ArticleController@detail')->name('article.show');
+Route::get('news/{type?}','ArticleController@news')->name('news');
+Route::get('article/{id}','ArticleController@detail')->name('article.show');
 
 Auth::routes();
 
