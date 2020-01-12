@@ -15,6 +15,7 @@ class CreatePatentMonitorsTable extends Migration
     {
         Schema::create('patent_monitors', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('patent_id')->comment('专利ID');
             $table->string('patent_sn')->comment('专利号');
             $table->string('patent_name')->comment('专利名称');
             $table->timestamp('apply_date')->nullable()->comment('申请日期');

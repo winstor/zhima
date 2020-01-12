@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Members\Controllers;
-use App\ArticleType;
+use App\Good;
+use App\Member;
 use App\Members\Extensions\Grid\PatentSelect;
 use App\Patent;
 use App\PatentCase;
@@ -53,24 +54,25 @@ class PatentController extends AdminController
                 $filter->equal('patent_domain_id','热门领域')->select(PatentDomain::pluck('name','id'));
             });
         });
-        $user = \Encore\Admin\Facades\Admin::user();
+        $user = Member::user();
         //$grid->column('id', __('ID'));
-        $grid->model()->where('user_id',$user->id)->with(['type','domain','state','college','member']);
+        $grid->model()->where('user_id',$user->id)->with(['type','domain','college','member','case','cert','monitor']);
         $grid->column('type.logo_url', __('专利信息'))->image()->display(function($logo_url){
             return $logo_url.$this->patent_sn.'<br/>'.$this->patent_name;
         });
-        $grid->column('patent_person', __('第一申请人'));
+        $grid->column('patent_person', __('申请（人/日期）'))->display(function($patent_person){
+                return $patent_person.'<br/>'.$this->apply_date->toDateString();
+        });
 
-        $grid->column('apply_date', __('申请日/监控'))->display(function($apply_date){
-            return $apply_date.'<br/>'.data_get([
-                    '<span class="label label-default">未监控</span>',
-                '<span class="label label-success">监控中</span>'
-                ],$this->is_monitor);
-        });
-        $grid->column('state.name','案件状态');
-        $grid->column('sale.state','价格/状态')->using(PatentSale::STATE_LABEL)->display(function($state){
-            return $state.'<span class="label-danger"></span>';
-        });
+        $grid->column('apply_date', __('申请日'));
+        $grid->column('case.name','案件状态');
+        $grid->column('monitor.state','监控状态')->display(function($state){
+            return $state?:0;
+        })->using([
+            '<span class="label label-danger">未监控</span>',
+            '<span class="label label-success">监控中</span>',
+        ]);
+        $grid->column('sale_state','售卖状态')->using(Good::SALE_STATE_LABEL);
         $grid->disableCreateButton();
         Admin::script('$("td").css("vertical-align","middle")');
 
@@ -126,6 +128,7 @@ class PatentController extends AdminController
     protected function form()
     {
         $form = new Form(new Patent);
+        $form->hidden('uuid', __('专利号'));
         $form->text('patent_sn', __('专利号'))->required();
         $form->text('patent_name', __('专利名称'))->required();
         $form->text('patent_person', __('专利权人'))->required();
@@ -133,9 +136,17 @@ class PatentController extends AdminController
         $form->select('patent_type_id', __('专利类型'))->options(PatentType::pluck('name','id'))->required();
         $form->select('patent_case_id', __('案件状态'))->options(PatentCase::pluck('name','id'))->required();
         $form->select('patent_cert_id', __('专利状态'))->options(PatentCert::pluck('name','id'))->required();
-        $form->datetime('apply_date', __('申请日期'))->required();
+        $form->datetime('apply_date', __('申请日期'))->format('YYYY-MM-DD')->required();
         $form->image('image', __('专利图'));
         $form->textarea('remark', __('备注'));
+        $form->hidden('user_id');
+        $form->saving(function(Form $form){
+            $user = Member::user();
+            if($form->model()->user_id && $form->model()->user_id != $user->id){
+                return back();
+            }
+            $form->user_id = $user->id;
+        });
         return $form;
     }
 }

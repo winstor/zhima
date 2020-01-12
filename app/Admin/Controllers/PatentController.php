@@ -19,7 +19,7 @@ class PatentController extends AdminController
      *
      * @var string
      */
-    protected $title = '会员专利';
+    protected $title = '专利管理';
 
     /**
      * Make a grid builder.

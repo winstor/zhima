@@ -25,6 +25,8 @@ Route::group([
     $router->resource('patent-types', 'PatentTypeController');
     //专利状态
     $router->resource('patent-cases', 'PatentCaseController');
+    $router->resource('patent-certs', 'PatentCertController');
+
 
     //专利管理
     $router->resource('patents', 'PatentController')->only(['index','show','destroy']);
@@ -44,7 +46,6 @@ Route::group([
     $router->resource('members', 'MemberController');
     $router->resource('member-reals', 'MemberRealController');
     //售卖记录
-    $router->resource('patent-sales', 'PatentSaleController');
     $router->resource('goods', 'GoodController');
 
 
