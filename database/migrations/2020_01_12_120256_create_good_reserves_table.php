@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePatentReservesTable extends Migration
+class CreateGoodReservesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreatePatentReservesTable extends Migration
      */
     public function up()
     {
-        Schema::create('patent_reserves', function (Blueprint $table) {
+        Schema::create('good_reserves', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('goods_id')->comment('专利售卖ID');
             $table->integer('user_id')->comment('预定人');
@@ -29,6 +29,6 @@ class CreatePatentReservesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('patent_reserves');
+        Schema::dropIfExists('good_reserves');
     }
 }

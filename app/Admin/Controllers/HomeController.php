@@ -14,8 +14,8 @@ class HomeController extends Controller
 {
     public function index(Content $content)
     {
-        $image = ImageManagerStatic::make(public_path('images/000001.tif'))->encode('jpg');
-        $image->save(public_path('images/000002.jpg'));
+        //$image = ImageManagerStatic::make(public_path('images/000001.tif'))->encode('jpg');
+        //$image->save(public_path('images/000002.jpg'));
         return $content
             ->title('欢迎进入')
             ->description('知识产权后台管理系统')

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCertStatesTable extends Migration
+class CreatePatentCertsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateCertStatesTable extends Migration
      */
     public function up()
     {
-        Schema::create('cert_states', function (Blueprint $table) {
+        Schema::create('patent_certs', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->comment('证件状态名称');
             $table->timestamps();
@@ -27,6 +27,6 @@ class CreateCertStatesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cert_states');
+        Schema::dropIfExists('patent_certs');
     }
 }

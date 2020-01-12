@@ -16,33 +16,30 @@ class CreatePatentsTable extends Migration
         Schema::create('patents', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->comment('用户ID');
-            $table->integer('electron_user_id')->default(0)->comment('电子账户ID');
             $table->string('patent_sn')->comment('专利号');
             $table->string('patent_name')->comment('专利名称');
-            $table->mediumInteger('college_id')->default(0)->comment('高校ID');
             $table->string('patent_person')->comment('申请人专利权人');
-            $table->string('inventor',100)->nullable()->comment('发明人设计人');
+            $table->timestamp('apply_date')->nullable()->comment('申请日期');
+
             $table->integer('patent_domain_id')->default(0)->comment('领域ID');
             $table->integer('patent_type_id')->default(0)->comment('类型ID');
-            $table->integer('patent_state_id')->default(0)->comment('专利状态ID');
-            $table->integer('cert_state_id')->default(0)->comment('下证状态ID');
-            $table->timestamp('apply_date')->nullable()->comment('申请日期');
-            $table->text('patent_remark')->nullable()->comment('专利备注');
+            $table->integer('patent_case_id')->default(0)->comment('案例状态ID');
+            $table->integer('patent_cert_id')->default(0)->comment('下证状态ID');
+
+            $table->integer('electron_user_id')->default(0)->comment('电子账户ID');
+            $table->string('inventor',100)->nullable()->comment('发明人设计人');
+            $table->text('remark')->nullable()->comment('专利备注');
             $table->string('image')->nullable()->comment('专利图');
 
-            $table->tinyInteger('is_monitor')->default(0)->comment('是否监控');
-            $table->tinyInteger('monitor_state')->default(0)->comment('监控状态');
-            $table->timestamp('monitor_date')->nullable()->comment('监控到期时间');
-            $table->text('fee_remark')->nullable()->comment('年费备注');
+            $table->tinyInteger('sale_state')->default(0)->comment('售卖状态');
+
             $table->timestamps();
             $table->softDeletes();
             //索引
             $table->index('user_id','用户ID');
-            $table->index('electron_user_id','电子账户ID');
-            $table->index('college_id','高校ID');
             $table->index('patent_type_id','类型ID');
-            $table->index('patent_state_id','专利状态ID');
-            $table->index('cert_state_id','下证状态ID');
+            $table->index('patent_case_id','专利状态ID');
+            $table->index('patent_cert_id','下证状态ID');
             $table->index('patent_domain_id','领域ID');
 
         });

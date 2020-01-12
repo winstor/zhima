@@ -4,20 +4,19 @@ namespace App\Admin\Controllers;
 
 use App\Patent;
 use App\PatentCase;
-use App\PatentState;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 
-class PatentStateController extends AdminController
+class PatentCaseController extends AdminController
 {
     /**
      * Title for current resource.
      *
      * @var string
      */
-    protected $title = '专利状态';
+    protected $title = '案件状态';
 
     /**
      * Make a grid builder.
@@ -26,7 +25,7 @@ class PatentStateController extends AdminController
      */
     protected function grid()
     {
-        $grid = new Grid(new PatentState);
+        $grid = new Grid(new PatentCase());
 
         $grid->column('id', __('ID'));
         $grid->column('name', __('状态名称'));
@@ -35,7 +34,6 @@ class PatentStateController extends AdminController
         $grid->column('updated_at', __('admin.updated_at'));
         $grid->disableFilter();
         $grid->disableExport();
-        //$grid->disableBatchActions();
 
         return $grid;
     }
@@ -48,7 +46,8 @@ class PatentStateController extends AdminController
      */
     protected function detail($id)
     {
-
+        $show = new Show(PatentCase::findOrFail($id));
+        return $show;
     }
 
     /**
@@ -61,13 +60,14 @@ class PatentStateController extends AdminController
         $form = new Form(new PatentCase());
 
         $form->text('name', __('专利状态'))->required();
-        $form->select('cert_state_id', __('下证状态'))->options(Patent::CERT_STATE)
+        $form->select('patent_cert_id', __('下证状态'))->options(Patent::CERT_STATE)
             ->default(0)->help('采集专利时使用');
         $form->saving(function(Form $form){
-            if(!$form->cert_state_id){
-                $form->cert_state_id = 0;
+            if(!$form->patent_cert_id){
+                $form->patent_cert_id = 0;
             }
         });
+
         return $form;
     }
 }

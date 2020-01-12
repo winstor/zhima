@@ -28,19 +28,14 @@ class MemberController extends AdminController
         $grid = new Grid(new Member());
         $grid->model()->orderBy('id','desc');
         $grid->column('id', __('Id'));
-        $grid->column('username', __('账号/姓名'))->display(function($username){
-            return $username.'<br/>'.$this->name;
-        });
-        $grid->column('mobile', __('联系方式'))->display(function($mobile){
-            $mobile = $mobile?:$this->phone;
-            return $mobile.'<br/>'.$this->email;
-        });
-        $grid->column('address', __('详细地址'));
+        $grid->column('username', __('账号'));
+        $grid->column('name', __('姓名'));
+        $grid->column('mobile', __('电话'));
+        $grid->column('email', __('邮箱'));
         $grid->column('real_state', __('是否认证'))
             ->using(['未认证','已认证','认证失败','待审核'],'')
             ->dot(['default','success','default','danger'])->sortable();
         $grid->column('created_at', __('注册时间'));
-        $grid->column('updated_at', __('admin.updated_at'));
         Admin::script('$("td").css("vertical-align","middle")');
         $grid->disableExport();
         $grid->disableFilter();

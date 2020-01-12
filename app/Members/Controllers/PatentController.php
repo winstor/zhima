@@ -4,9 +4,9 @@ namespace App\Members\Controllers;
 use App\ArticleType;
 use App\Members\Extensions\Grid\PatentSelect;
 use App\Patent;
+use App\PatentCase;
+use App\PatentCert;
 use App\PatentDomain;
-use App\PatentSale;
-use App\PatentState;
 use App\PatentType;
 use Encore\Admin\Admin;
 use Encore\Admin\Controllers\AdminController;
@@ -126,26 +126,16 @@ class PatentController extends AdminController
     protected function form()
     {
         $form = new Form(new Patent);
-
-        $form->number('user_id', __('User id'));
-        $form->number('electron_user_id', __('Electron user id'));
-        $form->text('patent_sn', __('Patent sn'));
-        $form->text('patent_name', __('Patent name'));
-        $form->number('college_id', __('College id'));
-        $form->text('patent_person', __('Patent person'));
-        $form->text('inventor', __('Inventor'));
-        $form->number('patent_domain_id', __('Patent domain id'));
-        $form->number('patent_type_id', __('Patent type id'));
-        $form->number('patent_state_id', __('Patent state id'));
-        $form->number('cert_state_id', __('Cert state id'));
-        $form->datetime('apply_date', __('Apply date'))->default(date('Y-m-d H:i:s'));
-        $form->textarea('patent_remark', __('Patent remark'));
-        $form->image('image', __('Image'));
-        $form->switch('is_monitor', __('Is monitor'));
-        $form->switch('monitor_state', __('Monitor state'));
-        $form->datetime('monitor_date', __('Monitor date'))->default(date('Y-m-d H:i:s'));
-        $form->textarea('fee_remark', __('Fee remark'));
-
+        $form->text('patent_sn', __('专利号'))->required();
+        $form->text('patent_name', __('专利名称'))->required();
+        $form->text('patent_person', __('专利权人'))->required();
+        $form->select('patent_domain_id', __('技术领域'))->options(PatentDomain::pluck('name','id'))->required();
+        $form->select('patent_type_id', __('专利类型'))->options(PatentType::pluck('name','id'))->required();
+        $form->select('patent_case_id', __('案件状态'))->options(PatentCase::pluck('name','id'))->required();
+        $form->select('patent_cert_id', __('专利状态'))->options(PatentCert::pluck('name','id'))->required();
+        $form->datetime('apply_date', __('申请日期'))->required();
+        $form->image('image', __('专利图'));
+        $form->textarea('remark', __('备注'));
         return $form;
     }
 }

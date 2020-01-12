@@ -27,3 +27,18 @@ app('view')->prependNamespace('admin', resource_path('views/member'));
     //$navbar->right('html...');
 
 });
+Encore\Admin\Form::init(function (Encore\Admin\Form $form) {
+
+    $form->disableEditingCheck();
+
+    //$form->disableCreatingCheck();
+    $form->tools(function (\Encore\Admin\Form\Tools $tools) {
+        $tools->disableDelete();
+        $tools->disableView();
+        //$tools->disableList();
+    });
+    $form->footer(function(\Encore\Admin\Form\Footer $footer){
+        $footer->disableReset();
+        $footer->disableViewCheck();
+    });
+});
