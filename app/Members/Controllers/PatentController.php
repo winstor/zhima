@@ -80,7 +80,10 @@ class PatentController extends AdminController
         $grid->disableExport();
         $grid->disableColumnSelector();
         $grid->tools(function(Grid\Tools $tools){
-            $tools->append(new PatentSelect());
+            //$tools->append(new PatentSelect());
+        });
+        $grid->actions(function(Grid\Displayers\Actions $actions){
+            $actions->disableView();
         });
         return $grid;
     }

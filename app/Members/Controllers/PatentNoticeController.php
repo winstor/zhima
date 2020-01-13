@@ -5,10 +5,13 @@ namespace App\Members\Controllers;
 use App\Admin\Actions\Post\ImportPost;
 use App\Admin\Extensions\Import\ImportPatentNotice;
 use App\PatentNotice;
+use Chumper\Zipper\Zipper;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
+use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
+use Illuminate\Support\Facades\Storage;
 
 class PatentNoticeController extends AdminController
 {
@@ -17,7 +20,7 @@ class PatentNoticeController extends AdminController
      *
      * @var string
      */
-    protected $title = 'App\PatentNotice';
+    protected $title = '通知书';
 
     /**
      * Make a grid builder.
@@ -57,23 +60,15 @@ class PatentNoticeController extends AdminController
     protected function detail($id)
     {
         $show = new Show(PatentNotice::findOrFail($id));
-
-        $show->field('id', __('Id'));
-        $show->field('user_id', __('User id'));
-        $show->field('patent_id', __('Patent id'));
-        $show->field('notice_name', __('Notice name'));
-        $show->field('notice_serial', __('Notice serial'));
-        $show->field('notice_type', __('Notice type'));
-        $show->field('notice_date', __('Notice date'));
-        $show->field('pay_deadline_date', __('Pay deadline date'));
-        $show->field('handle_state', __('Handle state'));
-        $show->field('postcode', __('Postcode'));
-        $show->field('address_info', __('Address info'));
-        $show->field('receiver_name', __('Receiver name'));
-        $show->field('created_at', __('Created at'));
-        $show->field('updated_at', __('Updated at'));
-
         return $show;
+    }
+
+    public function create(Content $content)
+    {
+        return $content
+            ->title('添加专利')
+            ->description('上传通知书')
+            ->body($this->form());
     }
 
     /**
@@ -83,20 +78,20 @@ class PatentNoticeController extends AdminController
      */
     protected function form()
     {
+//        $zipper = new Zipper();
+//        $files = glob('1/GA000196188357/*');
+//        $zipper->make('1/GA000196188357.zip')->add($files)->close();
+//        dump($files);
+//        exit;
         $form = new Form(new PatentNotice());
-
-        $form->number('user_id', __('User id'));
-        $form->number('patent_id', __('Patent id'));
-        $form->text('notice_name', __('Notice name'));
-        $form->text('notice_serial', __('Notice serial'));
-        $form->text('notice_type', __('Notice type'));
-        $form->datetime('notice_date', __('Notice date'))->default(date('Y-m-d H:i:s'));
-        $form->datetime('pay_deadline_date', __('Pay deadline date'))->default(date('Y-m-d H:i:s'));
-        $form->switch('handle_state', __('Handle state'));
-        $form->text('postcode', __('Postcode'));
-        $form->text('address_info', __('Address info'));
-        $form->text('receiver_name', __('Receiver name'));
-
+        $form->setTitle('请选择文件');
+        $form->file('notice_file', __('文件'));
+        $form->saving(function(Form $form){
+            $file = request()->file('notice_file');
+            dump($file->getSize());exit;
+            $zipper = new Zipper();
+            $zipper->make($file->getRealPath())->extractTo(storage_path('notices/file'));
+        });
         return $form;
     }
 }
