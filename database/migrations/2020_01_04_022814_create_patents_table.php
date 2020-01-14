@@ -35,8 +35,10 @@ class CreatePatentsTable extends Migration
             $table->tinyInteger('is_cheap')->default(0)->comment('是否特价');
             $table->tinyInteger('is_best')->default(0)->comment('是否优质');
             $table->tinyInteger('sale_state')->default(0)->comment('售卖状态');
+            $table->timestamp('sale_add_time')->nullable()->comment('售卖添加时间');
             //监控
             $table->tinyInteger('monitor_state')->default(0)->comment('监控状态');
+            $table->timestamp('monitor_add_time')->nullable()->comment('监控加入时间');
             $table->timestamp('monitor_end_time')->nullable()->comment('监控到期时间');
             $table->text('fee_remark')->nullable()->comment('年费备注');
 

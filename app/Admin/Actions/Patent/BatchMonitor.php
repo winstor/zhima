@@ -14,16 +14,16 @@ class BatchMonitor extends BatchAction
         $memberServer = new MemberServer();
         $user = $memberServer->getUser();
         foreach ($collection as $model) {
-            if($model->user_id == $user->id && $model->monitor_state == 0){
+            if($model->user_id == $user->id && !$model->monitor_state){
                 $model->monitor_state = 1;
-                if(Carbon::parse($model->monitor_end_date)->lt($user->monitor_end_date)){
-                    $model->monitor_end_date = $user->monitor_end_date;
+                $model->monitor_add_time = now();
+                if(Carbon::now()->lt($user->monitor_end_time)){
+                    $model->monitor_end_time = $user->monitor_end_time;
                 }
                 $model->save();
             }
         }
-
-        return $this->response()->success('加入监控成功')->refresh();
+        return $this->response()->swal()->success('加入监控成功')->refresh();
     }
 
     public function rename()
