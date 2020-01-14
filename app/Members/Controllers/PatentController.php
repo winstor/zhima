@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Members\Controllers;
+use App\Admin\Actions\Patent\BatchAddGoods;
+use App\Admin\Actions\Patent\BatchMonitor;
 use App\Good;
 use App\Member;
 use App\Members\Extensions\Grid\PatentSelect;
@@ -26,6 +28,7 @@ class PatentController extends AdminController
     protected $title = '专利';
     public function index(Content $content)
     {
+        Admin::css('/css/d_newscss.css');
         return $content
             ->title($this->title())
             ->description($this->description['index'] ?? trans('admin.list'))
@@ -66,21 +69,23 @@ class PatentController extends AdminController
 
         $grid->column('apply_date', __('申请日'));
         $grid->column('case.name','案件状态');
-        $grid->column('monitor.state','监控状态')->display(function($state){
-            return $state?:0;
-        })->using([
-            '<span class="label label-danger">未监控</span>',
-            '<span class="label label-success">监控中</span>',
-        ]);
-        $grid->column('sale_state','售卖状态')->using(Good::SALE_STATE_LABEL);
+        $grid->column('monitor_state','监控状态')->using(['未监控','已监控','待审核'])
+            ->label(['success','danger','warning']);
+
+        $grid->column('sale_state','售卖状态')->using(['未发布','待交易','已预约'])
+            ->label(['success','danger','warning']);
         $grid->disableCreateButton();
         Admin::script('$("td").css("vertical-align","middle")');
 
         $grid->disableFilter();
         $grid->disableExport();
         $grid->disableColumnSelector();
+        $grid->batchActions(function(Grid\Tools\BatchActions $batchActions){
+            $batchActions->disableDeleteAndHodeSelectAll();
+        });
         $grid->tools(function(Grid\Tools $tools){
-            //$tools->append(new PatentSelect());
+            $tools->append(new BatchAddGoods());
+            $tools->append(new BatchMonitor());
         });
         $grid->actions(function(Grid\Displayers\Actions $actions){
             $actions->disableView();
@@ -131,7 +136,6 @@ class PatentController extends AdminController
     protected function form()
     {
         $form = new Form(new Patent);
-        $form->hidden('uuid', __('专利号'));
         $form->text('patent_sn', __('专利号'))->required();
         $form->text('patent_name', __('专利名称'))->required();
         $form->text('patent_person', __('专利权人'))->required();
@@ -140,8 +144,6 @@ class PatentController extends AdminController
         $form->select('patent_case_id', __('案件状态'))->options(PatentCase::pluck('name','id'))->required();
         $form->select('patent_cert_id', __('专利状态'))->options(PatentCert::pluck('name','id'))->required();
         $form->datetime('apply_date', __('申请日期'))->format('YYYY-MM-DD')->required();
-        $form->image('image', __('专利图'));
-        $form->textarea('remark', __('备注'));
         $form->hidden('user_id');
         $form->saving(function(Form $form){
             $user = Member::user();

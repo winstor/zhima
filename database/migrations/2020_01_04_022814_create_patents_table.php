@@ -30,18 +30,31 @@ class CreatePatentsTable extends Migration
             $table->string('inventor',100)->nullable()->comment('发明人设计人');
             $table->text('remark')->nullable()->comment('专利备注');
             $table->string('image')->nullable()->comment('专利图');
-
+            //卖
+            $table->decimal('price',10,2)->default(0)->comment('价格');
+            $table->tinyInteger('is_cheap')->default(0)->comment('是否特价');
+            $table->tinyInteger('is_best')->default(0)->comment('是否优质');
             $table->tinyInteger('sale_state')->default(0)->comment('售卖状态');
+            //监控
+            $table->tinyInteger('monitor_state')->default(0)->comment('监控状态');
+            $table->timestamp('monitor_end_time')->nullable()->comment('监控到期时间');
+            $table->text('fee_remark')->nullable()->comment('年费备注');
+
 
             $table->timestamps();
             $table->softDeletes();
             //索引
-            $table->index('user_id','用户ID');
-            $table->index('patent_type_id','类型ID');
-            $table->index('patent_case_id','专利状态ID');
-            $table->index('patent_cert_id','下证状态ID');
-            $table->index('patent_domain_id','领域ID');
-
+            $table->index('user_id','user_id');
+            $table->index('patent_type_id','patent_type_id');
+            $table->index('patent_case_id','patent_case_id');
+            $table->index('patent_cert_id','patent_cert_id');
+            $table->index('patent_domain_id','patent_domain_id');
+            //售卖
+            $table->index('is_cheap','is_cheap');
+            $table->index('is_best','is_best');
+            $table->index('sale_state','sale_state');
+            //监控状态
+            $table->index('monitor_state','monitor_state');
         });
     }
 

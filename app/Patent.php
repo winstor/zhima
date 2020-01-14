@@ -45,9 +45,9 @@ class Patent extends Model
         return $this->hasOne(PatentMonitor::class,'patent_id');
     }
 
-    public static function checkUser($id)
+    public function checkUser()
     {
-        $user  = Member::user();
-        return self::where('user_id',$user->id)->where('id',$id)->count()?true:false;
+         Member::user();
+
     }
 }
