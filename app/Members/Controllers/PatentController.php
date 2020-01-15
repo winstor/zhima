@@ -28,10 +28,10 @@ class PatentController extends AdminController
     protected $title = '专利';
     public function index(Content $content)
     {
-        Admin::css('/css/d_newscss.css');
         return $content
             ->title($this->title())
             ->description($this->description['index'] ?? trans('admin.list'))
+            ->row('<link rel="stylesheet" href="/css/d_newscss.css">')
             ->body($this->grid());
     }
 
