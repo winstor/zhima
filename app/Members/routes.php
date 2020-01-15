@@ -13,7 +13,16 @@ Route::resource('monitors','MonitorController');
 
 Route::resource('electron-accounts', 'ElectronUserController');
 
+Route::resource('patentSales', 'PatentSaleController');
+
 //通知书
 Route::get('notices','PatentNoticeController@index')->name('notices.index');
 Route::get('notices/upload','PatentNoticeController@create')->name('notices.upload');
 Route::post('notices','PatentNoticeController@store')->name('notices.upload');
+
+
+//回收站
+Route::resource('patentRecycles', 'PatentRecycleController');
+
+Route::get('users', 'MemberController@index')->name('users.detail');
+Route::post('users', 'MemberController@update')->name('users.update');

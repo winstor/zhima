@@ -58,7 +58,7 @@ class PatentController extends AdminController
             });
         });
         $user = Member::user();
-        //$grid->column('id', __('ID'));
+        $grid->column('id', __('序号'));
         $grid->model()->where('user_id',$user->id)->with(['type','domain','college','member','case','cert','monitor']);
         $grid->column('type.logo_url', __('专利信息'))->image()->display(function($logo_url){
             return $logo_url.$this->patent_sn.'<br/>'.$this->patent_name;
@@ -72,16 +72,17 @@ class PatentController extends AdminController
         $grid->column('monitor_state','监控状态')->using(['未监控','已监控','待审核'])
             ->label(['success','danger','warning']);
 
-        $grid->column('sale_state','售卖状态')->using(['未发布','待交易','已预约'])
-            ->label(['success','danger','warning']);
+        $grid->column('sale_state','售卖状态')->using(Patent::SALE_STATE,'未发布')
+            ->label(['success','danger','warning','default']);
         $grid->disableCreateButton();
         Admin::script('$("td").css("vertical-align","middle")');
 
         $grid->disableFilter();
         $grid->disableExport();
         $grid->disableColumnSelector();
+        $grid->disableBatchActions(false);
         $grid->batchActions(function(Grid\Tools\BatchActions $batchActions){
-            $batchActions->disableDeleteAndHodeSelectAll();
+            //$batchActions->disableDeleteAndHodeSelectAll();
         });
         $grid->tools(function(Grid\Tools $tools){
             $tools->append(new BatchAddGoods());

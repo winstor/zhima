@@ -9,6 +9,7 @@ class Patent extends Model
 {
     use SoftDeletes;
     protected $dates = ['apply_date'];
+    const SALE_STATE = [1=>'待交易',2=>'已预约',3=>'已交易'];
     //
     public function domain()
     {

@@ -2,24 +2,22 @@
 
 namespace App\Members\Controllers;
 
+use App\Good;
 use App\Patent;
-use App\PatentDomain;
-use App\PatentType;
-use Carbon\Carbon;
 use Encore\Admin\Admin;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 
-class MonitorController extends AdminController
+class PatentSaleController extends AdminController
 {
     /**
      * Title for current resource.
      *
      * @var string
      */
-    protected $title = '年费监控';
+    protected $title = 'App\Patent';
 
     /**
      * Make a grid builder.
@@ -28,36 +26,29 @@ class MonitorController extends AdminController
      */
     protected function grid()
     {
-        $grid = new Grid(new Patent);
-        $grid->filter(function(Grid\Filter $filter){
-            $filter->disableIdFilter();
-            $filter->column(1/3, function (Grid\Filter $filter) {
-                $filter->equal('patent_sn','专利号');
-                $filter->equal('patent_type_id','专利类型')->select(PatentType::pluck('name','id'));
-            });
-            $filter->column(1/3, function (Grid\Filter $filter) {
-                $filter->equal('is_monitor','监控状态')->select(['未监控','监控中']);
-            });
-            $filter->column(1/3, function (Grid\Filter $filter) {
-                $filter->equal('patent_domain_id','热门领域')->select(PatentDomain::pluck('name','id'));
-            });
-        });
-
-       // $grid->model()->with(['type','domain','member']);
+        $grid = new Grid(new Patent());
         $grid->column('id', __('序号'));
         $grid->column('type.logo', __('专利信息'))->image('/','',30)
             ->display(function($logo){
-            return $logo.$this->patent_sn.'<br/>'.$this->patent_name;
+                return $logo.$this->patent_sn.'<br/>'.$this->patent_name;
+            });
+
+        $grid->column('patent_person', __('member.patent_person'));
+        $grid->column('apply_date', __('member.apply_date'));
+        $grid->column('domain.name', __('member.domain_name'));
+        $grid->column('case.name', __('member.patent_case').'/'.__('member.patent_cert'))
+        ->display(function($case_name){
+            $cert_name = $this->cert?$this->cert->name:'';
+            return $case_name.'<br/>'.$cert_name;
         });
-        $grid->column('patent_person', __('第一申请人'));
-        $grid->column('case.name', __('申请日/案件状态'))->display(function($case_name){
-            return $this->apply_date->toDateString().'<br/>'.$case_name;
-        });
-        $grid->column('is_monitor', __('监控状态'));
-        $grid->column('created_at', __('更新创建日期'))->display(function($created_at){
-            return $this->updated_at.'<br/>'.$created_at;
-        });
+        $sale_state = Good::SALE_STATE;
+        unset($sale_state[0]);
+        $grid->column('sale_state', __('member.state'))->width(150)->editable('select', $sale_state);
+        $grid->column('price', __('member.parent_price'))->width(150)->editable();
+        $grid->column('sale_remark', __('member.sale_remark'))
+            ->display(function($sale_remark){return $sale_remark?:'';})->width(200)->editable('textarea');
         $grid->disableBatchActions(false);
+
         Admin::script('$("td").css("vertical-align","middle")');
         return $grid;
     }
@@ -90,7 +81,9 @@ class MonitorController extends AdminController
         $show->field('is_cheap', __('Is cheap'));
         $show->field('is_best', __('Is best'));
         $show->field('sale_state', __('Sale state'));
+        $show->field('sale_add_time', __('Sale add time'));
         $show->field('monitor_state', __('Monitor state'));
+        $show->field('monitor_add_time', __('Monitor add time'));
         $show->field('monitor_end_time', __('Monitor end time'));
         $show->field('fee_remark', __('Fee remark'));
         $show->field('created_at', __('Created at'));
@@ -126,7 +119,9 @@ class MonitorController extends AdminController
         $form->switch('is_cheap', __('Is cheap'));
         $form->switch('is_best', __('Is best'));
         $form->switch('sale_state', __('Sale state'));
+        $form->datetime('sale_add_time', __('Sale add time'))->default(date('Y-m-d H:i:s'));
         $form->switch('monitor_state', __('Monitor state'));
+        $form->datetime('monitor_add_time', __('Monitor add time'))->default(date('Y-m-d H:i:s'));
         $form->datetime('monitor_end_time', __('Monitor end time'))->default(date('Y-m-d H:i:s'));
         $form->textarea('fee_remark', __('Fee remark'));
 

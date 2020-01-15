@@ -4,11 +4,49 @@ namespace App\Members\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Member;
+use Encore\Admin\Controllers\AdminController;
+use Encore\Admin\Form;
+use Encore\Admin\Layout\Content;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Members\Forms\Settings;
+use Encore\Admin\Widgets;
 
 class MemberController extends Controller
 {
+
+    public function index(Content $content)
+    {
+        return $content
+            ->title('  ')
+            ->body(Widgets\Tab::forms([
+                'detail'    => Settings\User\Detail::class,
+            ]));
+        $user  = Member::user();
+        return $content->body($this->form()->edit($user->id));
+    }
+
+    public function update()
+    {
+        return 3;
+        $user  = Member::user();
+        return $this->form()->update($user->id);
+    }
+
+    public function form()
+    {
+        $form = new Form(new Member());
+
+        $form->text('name', __('真实姓名'))->required();
+        $form->mobile('mobile', __('电话号码'))->required();
+        $form->email('email', __('电子邮件'))->required();
+        $form->text('qq', __('QQ'));
+        $form->image('avatar', __('个人头像'));
+        $form->setAction(route('users.update'));
+        return $form;
+    }
+
+    /*
     public function register()
     {
         return view('register');
@@ -22,12 +60,6 @@ class MemberController extends Controller
             ?: redirect($this->redirectPath());
         //return $this->form()->store();
     }
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
     protected function validator(array $data)
     {
         return Validator::make($data, [
@@ -61,4 +93,6 @@ class MemberController extends Controller
             'qq'=>$data['qq']??''
         ]);
     }
+    */
+
 }

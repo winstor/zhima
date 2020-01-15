@@ -28,7 +28,7 @@ class CreatePatentsTable extends Migration
 
             $table->integer('electron_user_id')->default(0)->comment('电子账户ID');
             $table->string('inventor',100)->nullable()->comment('发明人设计人');
-            $table->text('remark')->nullable()->comment('专利备注');
+            $table->text('sale_remark')->nullable()->comment('售卖说明');
             $table->string('image')->nullable()->comment('专利图');
             //卖
             $table->decimal('price',10,2)->default(0)->comment('价格');

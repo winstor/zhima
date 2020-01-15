@@ -20,7 +20,17 @@
 
 Encore\Admin\Form::forget(['map', 'editor']);
 app('view')->prependNamespace('admin', resource_path('views/member'));
-\Encore\Admin\Facades\Admin::navbar(function (\Encore\Admin\Widgets\Navbar $navbar) {
+
+
+Encore\Admin\Grid::init(function(\Encore\Admin\Grid $grid){
+    $grid->disableExport();
+    $grid->disableCreateButton();
+    $grid->disableColumnSelector();
+    $grid->disableFilter();
+    $grid->disableActions();
+    $grid->disableBatchActions();
+});
+Encore\Admin\Facades\Admin::navbar(function (\Encore\Admin\Widgets\Navbar $navbar) {
 
     $navbar->left(view('member.search-bar'));
 
@@ -30,12 +40,12 @@ app('view')->prependNamespace('admin', resource_path('views/member'));
 Encore\Admin\Form::init(function (Encore\Admin\Form $form) {
 
     $form->disableEditingCheck();
-
+    $form->disableCreatingCheck();
     //$form->disableCreatingCheck();
     $form->tools(function (\Encore\Admin\Form\Tools $tools) {
         $tools->disableDelete();
         $tools->disableView();
-        //$tools->disableList();
+        $tools->disableList();
     });
     $form->footer(function(\Encore\Admin\Form\Footer $footer){
         $footer->disableReset();

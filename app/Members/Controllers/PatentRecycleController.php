@@ -2,24 +2,28 @@
 
 namespace App\Members\Controllers;
 
+use App\Admin\Actions\Patent\BatchAddGoods;
+use App\Admin\Actions\Patent\BatchMonitor;
+use App\Admin\Actions\Patent\BatchRealDelete;
+use App\Admin\Actions\Patent\BatchRecovery;
+use App\Member;
 use App\Patent;
 use App\PatentDomain;
 use App\PatentType;
-use Carbon\Carbon;
 use Encore\Admin\Admin;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 
-class MonitorController extends AdminController
+class PatentRecycleController extends AdminController
 {
     /**
      * Title for current resource.
      *
      * @var string
      */
-    protected $title = '年费监控';
+    protected $title = 'App\Patent';
 
     /**
      * Make a grid builder.
@@ -28,37 +32,26 @@ class MonitorController extends AdminController
      */
     protected function grid()
     {
+        config(['member.submit'=>'22']);
         $grid = new Grid(new Patent);
-        $grid->filter(function(Grid\Filter $filter){
-            $filter->disableIdFilter();
-            $filter->column(1/3, function (Grid\Filter $filter) {
-                $filter->equal('patent_sn','专利号');
-                $filter->equal('patent_type_id','专利类型')->select(PatentType::pluck('name','id'));
-            });
-            $filter->column(1/3, function (Grid\Filter $filter) {
-                $filter->equal('is_monitor','监控状态')->select(['未监控','监控中']);
-            });
-            $filter->column(1/3, function (Grid\Filter $filter) {
-                $filter->equal('patent_domain_id','热门领域')->select(PatentDomain::pluck('name','id'));
-            });
-        });
-
-       // $grid->model()->with(['type','domain','member']);
+        $user = Member::user();
         $grid->column('id', __('序号'));
-        $grid->column('type.logo', __('专利信息'))->image('/','',30)
-            ->display(function($logo){
-            return $logo.$this->patent_sn.'<br/>'.$this->patent_name;
-        });
-        $grid->column('patent_person', __('第一申请人'));
-        $grid->column('case.name', __('申请日/案件状态'))->display(function($case_name){
-            return $this->apply_date->toDateString().'<br/>'.$case_name;
-        });
-        $grid->column('is_monitor', __('监控状态'));
-        $grid->column('created_at', __('更新创建日期'))->display(function($created_at){
-            return $this->updated_at.'<br/>'.$created_at;
-        });
+        $grid->model()->where('user_id',$user->id)->with(['type','case'])
+            ->whereNotNull('deleted_at')->withTrashed();
+        $grid->column('type.name', __('专利类型'));
+        $grid->column('patent_sn', __('member.patent_sn'));
+        $grid->column('patent_name', __('member.patent_name'));
+        $grid->column('patent_person', __('member.patent_person'));
+        $grid->column('apply_date', __('member.apply_date'));
+        $grid->column('case.name', __('member.patent_case'));
         $grid->disableBatchActions(false);
-        Admin::script('$("td").css("vertical-align","middle")');
+        $grid->batchActions(function(Grid\Tools\BatchActions $batchActions){
+            $batchActions->disableDeleteAndHodeSelectAll();
+        });
+        $grid->tools(function(Grid\Tools $tools){
+            $tools->append(new BatchRecovery());
+            $tools->append(new BatchRealDelete());
+        });
         return $grid;
     }
 
@@ -84,13 +77,15 @@ class MonitorController extends AdminController
         $show->field('patent_cert_id', __('Patent cert id'));
         $show->field('electron_user_id', __('Electron user id'));
         $show->field('inventor', __('Inventor'));
-        $show->field('remark', __('Remark'));
+        $show->field('sale_remark', __('Sale remark'));
         $show->field('image', __('Image'));
         $show->field('price', __('Price'));
         $show->field('is_cheap', __('Is cheap'));
         $show->field('is_best', __('Is best'));
         $show->field('sale_state', __('Sale state'));
+        $show->field('sale_add_time', __('Sale add time'));
         $show->field('monitor_state', __('Monitor state'));
+        $show->field('monitor_add_time', __('Monitor add time'));
         $show->field('monitor_end_time', __('Monitor end time'));
         $show->field('fee_remark', __('Fee remark'));
         $show->field('created_at', __('Created at'));
@@ -120,13 +115,15 @@ class MonitorController extends AdminController
         $form->number('patent_cert_id', __('Patent cert id'));
         $form->number('electron_user_id', __('Electron user id'));
         $form->text('inventor', __('Inventor'));
-        $form->textarea('remark', __('Remark'));
+        $form->textarea('sale_remark', __('Sale remark'));
         $form->image('image', __('Image'));
         $form->decimal('price', __('Price'))->default(0.00);
         $form->switch('is_cheap', __('Is cheap'));
         $form->switch('is_best', __('Is best'));
         $form->switch('sale_state', __('Sale state'));
+        $form->datetime('sale_add_time', __('Sale add time'))->default(date('Y-m-d H:i:s'));
         $form->switch('monitor_state', __('Monitor state'));
+        $form->datetime('monitor_add_time', __('Monitor add time'))->default(date('Y-m-d H:i:s'));
         $form->datetime('monitor_end_time', __('Monitor end time'))->default(date('Y-m-d H:i:s'));
         $form->textarea('fee_remark', __('Fee remark'));
 
