@@ -2,7 +2,10 @@
 
 namespace App\Members\Controllers;
 
+use App\Admin\Actions\Patent\BatchCancelMonitor;
+use App\Admin\Actions\Patent\BatchMonitorExport;
 use App\Patent;
+use App\PatentCase;
 use App\PatentDomain;
 use App\PatentType;
 use Carbon\Carbon;
@@ -10,7 +13,9 @@ use Encore\Admin\Admin;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
+use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
+use Encore\Admin\Widgets;
 
 class MonitorController extends AdminController
 {
@@ -21,6 +26,15 @@ class MonitorController extends AdminController
      */
     protected $title = '年费监控';
 
+
+    public function index(Content $content)
+    {
+        return $content
+            ->title($this->title())
+            ->description($this->description['index'] ?? trans('admin.list'))
+            ->row('<link rel="stylesheet" href="/css/d_newscss.css">')
+            ->body($this->grid());
+    }
     /**
      * Make a grid builder.
      *
@@ -32,32 +46,49 @@ class MonitorController extends AdminController
         $grid->filter(function(Grid\Filter $filter){
             $filter->disableIdFilter();
             $filter->column(1/3, function (Grid\Filter $filter) {
-                $filter->equal('patent_sn','专利号');
                 $filter->equal('patent_type_id','专利类型')->select(PatentType::pluck('name','id'));
+                $filter->where(function ($query) {
+                    $query->where('patent_sn', 'like', "%{$this->input}%")
+                        ->orWhere('patent_name', 'like', "%{$this->input}%")
+                        ->orWhere('patent_person', 'like', "%{$this->input}%")
+                        ->orWhere('fee_remark', 'like', "%{$this->input}%");
+                }, '关键字')->placeholder('申请号/专利名称/申请人/年费备注');
+
             });
             $filter->column(1/3, function (Grid\Filter $filter) {
-                $filter->equal('is_monitor','监控状态')->select(['未监控','监控中']);
+                $filter->equal('patent_case_id','案件状态')->select(PatentCase::pluck('name','id'));
+                $filter->between('created_at', '缴费时间')->datetime();
             });
             $filter->column(1/3, function (Grid\Filter $filter) {
-                $filter->equal('patent_domain_id','热门领域')->select(PatentDomain::pluck('name','id'));
+                $filter->equal('monitor_state','监控状态')->select(['未监控','监控中','待审核']);
             });
         });
 
        // $grid->model()->with(['type','domain','member']);
+        $grid->model()->where('monitor_state','>',0);
         $grid->column('id', __('序号'));
         $grid->column('type.logo', __('专利信息'))->image('/','',30)
             ->display(function($logo){
             return $logo.$this->patent_sn.'<br/>'.$this->patent_name;
         });
-        $grid->column('patent_person', __('第一申请人'));
+        $grid->column('patent_person', __('第一申请人'))->filter('like');
         $grid->column('case.name', __('申请日/案件状态'))->display(function($case_name){
             return $this->apply_date->toDateString().'<br/>'.$case_name;
         });
-        $grid->column('is_monitor', __('监控状态'));
-        $grid->column('created_at', __('更新创建日期'))->display(function($created_at){
-            return $this->updated_at.'<br/>'.$created_at;
-        });
+        $grid->column('monitor_state', __('监控状态'))->using(['未监控','监控中','待审核'])->filter([
+            1 => '监控中',
+            2 => '待审核',
+        ])->label(['','success','warning']);
+        $grid->column('fee_remark', __('年费备注'))->editable('textarea');
         $grid->disableBatchActions(false);
+        $grid->batchActions(function(Grid\Tools\BatchActions $batchActions){
+            $batchActions->disableDeleteAndHodeSelectAll();
+        });
+        $grid->tools(function(Grid\Tools $tools){
+            //$tools->append(new BatchMonitorExport());
+            $tools->append(new BatchCancelMonitor());
+        });
+        $grid->disableFilter(false);
         Admin::script('$("td").css("vertical-align","middle")');
         return $grid;
     }

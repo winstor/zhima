@@ -28,7 +28,7 @@ HTML;
 
     public function dialog()
     {
-        $this->confirm('<span>是否永久删除？<br/><br/><h4>永久删除当前专利将不可恢复！</h4><br/><br/><br/></span>');
+        $this->confirm('<span>是否永久删除？<br/><br/><h5>永久删除当前专利将不可恢复！</h5><br/><br/></span>');
     }
 
 }
