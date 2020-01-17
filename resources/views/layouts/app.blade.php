@@ -63,9 +63,9 @@
                 <a href="/contact">联系我们</a>
             </div>
             <div class="xinxi">
-                <p style="top: 130px; left: 130px;">{{$configs['contact-tel']}}</p>
-                <p style="top: 130px; left: 535px;">{{$configs['contact-address']}} </p>
-                <p style="top: 130px; right: 5px;">{{$configs['contact-email']}}</p>
+                <p style="top: 130px; left: 130px;">{{$configs['contact-tel']??''}}</p>
+                <p style="top: 130px; left: 535px;">{{$configs['contact-address']??''}} </p>
+                <p style="top: 130px; right: 5px;">{{$configs['contact-email']??''}}</p>
             </div>
         </div>
     </div>
