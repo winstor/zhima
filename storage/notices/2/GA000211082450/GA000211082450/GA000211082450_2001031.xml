@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dmh SYSTEM "20010301.dtd"><cn_notice_info>
+  <notice_name name="通知书名称">缴纳申请费通知书</notice_name>
+  <postcode name="邮编">450000</postcode>
+  <address_info name="收件人地址">河南省郑州市金水区杨金路新科技市场9号楼1103</address_info>
+  <receiver_name name="收件人姓名">郑州芝麻知识产权代理事务所（普通合伙） 董晓勇(0371-66115265)</receiver_name>
+  <notice_sent name="通知书发文信息">
+    <notice_sent_serial name="发文序列号">2019052301636170</notice_sent_serial>
+    <notice_sent_date name="发文日期">20190523</notice_sent_date>
+    <notice_sent_type name="发文类型">0</notice_sent_type>
+  </notice_sent>
+
+  <application_number name="申请号或专利号">2019302564356</application_number>
+  <applicant_info name="申请人信息">
+    <applicant_name seq="1" name="申请人名称">成都中照照明科技有限公司</applicant_name>
+  </applicant_info>
+
+  <invention_title name="发明创造名称">景观灯（花开月季D）</invention_title>
+  <patent_agency name="代理机构信息">
+    <agency_name name="代理机构名称">郑州芝麻知识产权代理事务所（普通合伙）</agency_name>
+    <agency_code name="代理机构代码">41173</agency_code>
+    <agent_info seq="1" name="第一代理人信息">
+      <agent_name name="代理人姓名">董晓勇</agent_name>
+      <agent_workid name="代理人工作证号">4117327074.7</agent_workid>
+      <agent_phone name="代理人电话">0371-66115265</agent_phone>
+    </agent_info>
+
+    <agent_info seq="2" name="第二代理人信息">
+      <agent_name name="代理人姓名"/>
+      <agent_workid name="代理人工作证号"/>
+      <agent_phone name="代理人电话"/>
+    </agent_info>
+  </patent_agency>
+
+  <pay_deadline_date name="缴费截止日期">20190723</pay_deadline_date>
+  <fee_info_all name="所有费用信息">
+    <fee_info name="费用信息">
+      <fee seq="1">
+        <fee_name name="费用种类">申请费</fee_name>
+        <fee_amount name="金额">500</fee_amount>
+      </fee>
+
+      <fee seq="2">
+        <fee_name name="费用种类">优先权要求费</fee_name>
+        <fee_amount name="金额">0</fee_amount>
+      </fee>
+    </fee_info>
+
+    <fee_total name="费用金额总计">500</fee_total>
+  </fee_info_all>
+
+  <examiner_name name="审查员">自动受理</examiner_name>
+  <department name="审查部门">专利局初审及流程管理部</department>
+  <notice_template_code name="通知书模板代码">20010301</notice_template_code>
+  <notice_version name="通知书版本号">2010.4</notice_version>
+</cn_notice_info>
