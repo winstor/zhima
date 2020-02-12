@@ -10,7 +10,7 @@ use Encore\Admin\Layout\Content;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use App\Members\Forms\Settings;
+use App\Admin\Forms\Settings;
 use Encore\Admin\Widgets;
 use Encore\Admin\Facades\Admin;
 
@@ -20,8 +20,11 @@ class MemberController extends AdminController
     public function index(Content $content)
     {
         return $content
-            ->title('个人中心')
-            ->body($this->form()->edit(Admin::user()->id));
+            ->title('账户设置')
+            ->body(Widgets\Tab::forms([
+                'info'=>Settings\User\UserInfo::class,
+                'password'    => Settings\User\changePassword::class
+            ]));
     }
     //修改用户信息post
     public function modify()
