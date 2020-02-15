@@ -5,6 +5,7 @@ namespace App\Services;
 
 
 use App\Patent;
+use App\PatentMonitor;
 
 class PatentMonitorServer
 {
@@ -12,4 +13,5 @@ class PatentMonitorServer
     {
         return Patent::where('monitor_state',2)->count();
     }
+
 }

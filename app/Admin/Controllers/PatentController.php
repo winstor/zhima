@@ -14,6 +14,7 @@ use App\PatentCase;
 use App\PatentCert;
 use App\PatentDomain;
 use App\PatentType;
+use App\Services\MemberServer;
 use Encore\Admin\Admin;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
@@ -25,6 +26,12 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class PatentController extends AdminController
 {
+    protected $memberServer;
+    public function __construct(MemberServer $memberServer)
+    {
+        $this->memberServer = $memberServer;
+    }
+
     /**
      * Title for current resource.
      *
@@ -54,22 +61,9 @@ class PatentController extends AdminController
             'header'=>new HeaderSearch()
             ]
         );
-        $grid->filter(function(Grid\Filter $filter){
-            $filter->disableIdFilter();
-            $filter->column(1/3, function (Grid\Filter $filter) {
-                $filter->equal('patent_sn','专利号');
-                $filter->equal('patent_type_id','专利类型')->select(PatentType::pluck('name','id'));
-            });
-            $filter->column(1/3, function (Grid\Filter $filter) {
-                $filter->equal('is_monitor','监控状态')->select(['未监控','监控中']);
-            });
-            $filter->column(1/3, function (Grid\Filter $filter) {
-                $filter->equal('patent_domain_id','热门领域')->select(PatentDomain::pluck('name','id'));
-            });
-        });
-        $user = Member::user();
+        $user = $this->memberServer->getUser();
         //$grid->column('id', __('序号'));
-        $grid->model()->where('user_id',$user->id)->with(['type','domain','college','member','case','cert','monitor']);
+        $grid->model()->where('user_id',$user->id)->with(['type','domain','college','member','case','cert']);
         if(request()->get('patent_case_id')){
             $grid->model()->where('patent_case_id',request()->get('patent_case_id'));
         }

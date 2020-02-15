@@ -29,7 +29,7 @@ class BatchCancelMonitor extends BatchAction
 
     public function rename()
     {
-        return '<span class="btn btn-sm btn-danger" style="margin-right:10px;"><i class="fa fa-reply"></i>放弃监控</span>';
+        return '<span class="btn btn-sm btn-warning" style="margin-right:10px;"><i class="fa fa-reply"></i>放弃监控</span>';
     }
 
     public function dialog()

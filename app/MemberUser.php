@@ -83,4 +83,14 @@ class MemberUser extends Model implements AuthenticatableContract
 
         return $this->belongsToMany($relatedModel, $pivotTable, 'user_id', 'permission_id');
     }
+    //监控
+    public function monitors()
+    {
+        return $this->hasMany(PatentMonitor::class,'user_id');
+    }
+
+    public static function user()
+    {
+        return \Encore\Admin\Facades\Admin::user();
+    }
 }
