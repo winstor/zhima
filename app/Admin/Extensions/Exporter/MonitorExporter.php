@@ -55,9 +55,11 @@ class MonitorExporter extends ExcelExporter implements WithMapping
             $row->case->name ?? '',
             data_get([
                 '未监控',
-                '已监控',
-                '待审核'
-            ], $row->monitor_state, '未知'),
+                '年费正常',
+                '待审核',
+                '待维护',
+                '紧急滞纳'
+            ], $row->state(), '未知'),
         ];
         if($yearLog){
             $data[] = $yearLog['deadline'];

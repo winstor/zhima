@@ -32,7 +32,7 @@ Encore\Admin\Grid::init(function(\Encore\Admin\Grid $grid){
 });
 Encore\Admin\Facades\Admin::navbar(function (\Encore\Admin\Widgets\Navbar $navbar) {
 
-    $navbar->left(view('member.search-bar'));
+    $navbar->left(view('member.nav.header'));
 
     //$navbar->right('html...');
 
