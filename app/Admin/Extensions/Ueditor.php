@@ -6,7 +6,7 @@ use Encore\Admin\Form\Field;
 
 class Ueditor extends Field
 {
-    protected $view = 'admin.ueditor';
+    protected $view = 'ueditor';
 
     protected static $css = [
         //'/vendor/ueditor/themes/iframe.css'

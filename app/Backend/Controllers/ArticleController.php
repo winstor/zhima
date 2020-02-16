@@ -69,7 +69,7 @@ class ArticleController extends AdminController
         $form->text('title', __('标题'))->required();
         $form->select('article_type_id', __('类型'))->options(ArticleType::pluck('name','id'))->required();
         $form->image('logo', __('Logo'));
-        $form->editor('content', __('内容'));
+        $form->ueditor('content', __('内容'));
         $form->saved(function($form){
             if($form->logo){
                 $image = ImageManagerStatic::make($form->logo)->resize(350,245);

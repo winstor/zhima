@@ -4,6 +4,8 @@ namespace App\Backend\Controllers;
 
 use App\Admin\Actions\Patent\BatchMonitorAddTime;
 use App\Patent;
+use App\PatentCase;
+use App\PatentMonitor;
 use App\PatentType;
 use Carbon\Carbon;
 use Encore\Admin\Controllers\AdminController;
@@ -37,7 +39,7 @@ class PatentMonitorController extends AdminController
     protected function grid()
     {
         $patentType = PatentType::pluck('name','id')->toArray();
-        $grid = new Grid(new Patent());
+        $grid = new Grid(new PatentMonitor());
         $grid->filter(function(Grid\Filter $filter){
             $filter->disableIdFilter();
             $filter->column(1/3, function (Grid\Filter $filter) {
@@ -56,20 +58,43 @@ class PatentMonitorController extends AdminController
         });
         $grid->model()->where('monitor_state','>',0)->orderBy('id','desc');
         $grid->column('id', __('ID'));
-        $grid->column('patent_type_id', __('member.patent_type'))->using($patentType)->filter($patentType);
-        $grid->column('patent_sn', __('专利信息'))
-            ->display(function($patent_sn){
-            return $patent_sn.'<br/>'.$this->patent_name;
-        });
+        $grid->column('type.logo', __('专利信息'))->image('/', '', 30)
+            ->display(function ($logo) {
+                return $logo . $this->patent_sn . '<br/>' . $this->patent_name;
+            });
         $grid->column('patent_person', __('member.patent_person'));
-        $grid->column('apply_date', __('member.apply_date'))->filter('range', 'date');
-        $grid->column('monitor_state', __('监控状态'))->display(function($monitor_state){
-            if(Carbon::now()->gt($this->monitor_end_time)){
-                return '<span class="label label-default">已过期</span>';
-            }
-            return '<span class="label label-success">监控中</span>';
+        $grid->column('member.name', __('用户账户'));
+        $grid->column('patent_case_id', __('申请日/案件状态'))
+            ->using(PatentCase::pluck('name', 'id')->toArray())->display(function ($case_name) {
+                return $this->apply_date . '<br/>' . $case_name;
+            });
+        $grid->column('monitor_state', __('监控状态'))->display(function ($monitor_state) {
+            $state =  $this->state();
+            return data_get([
+                "<span class='label label-default'>未监控</span>",
+                "<span class='label label-success'>年费正常</span>",
+                "<span class='label label-warning'>待审核</span>",
+                "<span class='label label-info'>待维护</span>",
+                "<span class='label label-danger'>紧急滞纳</span>",
+                "<span class='label label-default'>已过期</span>"
+            ],$state,'');
         });
-        $grid->column('monitor_end_time', __('监控到期时间'));
+        $grid->column('year_fee_msg', '年费信息')->display(function () {
+            $payLog = $this->yearFeeLog();
+            if ($payLog) {
+                return '<span style="color:red">' . $payLog->deadline . '</span>前缴<br/>第<span style="color:red">' .
+                    $payLog->year_number . '</span>年年费<span style="color:red">' . $payLog->amount . '</span>元';
+            }
+            return '';
+        });
+        $grid->column('other_fee', '滞纳金/恢复费')->display(function () {
+            $late_fee = $this->lateFeeTotal();
+            $recovery_fee = $this->recoveryFeeTotal();
+            $late_fee = $late_fee ? '滞纳金<span style="color:red">' . $late_fee . '</span>元<br/>' : '';
+            $recovery_fee = $recovery_fee ? '恢复费<span style="color:red">' . $recovery_fee . '</span>元' : '';
+            return $late_fee . $recovery_fee;
+        });
+        $grid->column('monitor_end_time', __('监控到期时间'))->date('Y-m-d');
         $grid->disableCreateButton();
         $grid->batchActions(function(Grid\Tools\BatchActions $batchActions){
             $batchActions->disableDeleteAndHodeSelectAll();

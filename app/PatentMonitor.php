@@ -9,6 +9,10 @@ class PatentMonitor extends Model
 {
     public $table = 'patents';
 
+    public function member()
+    {
+        return $this->belongsTo(Member::class,'user_id');
+    }
     //缴费记录
     public function payLogs()
     {
@@ -56,10 +60,13 @@ class PatentMonitor extends Model
     public function state()
     {
         if ($this->monitor_state == 1) {
-            if ($this->payLogs->isEmpty()) {
+        if (Carbon::now()->gt($this->monitor_end_time)){
+                //监控已过期
+                return 5;
+            } elseif ($this->payLogs->isEmpty()) {
                 //待维护
                 return 3;
-            } else {
+            }  else {
                 $res = $this->payLogs->where('type', 1)->where('state', 0)->where('deadline', '<=', Carbon::now()->addMonths(2))->count();
                 if($res){
                     //紧急滞纳

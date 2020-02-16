@@ -50,7 +50,6 @@ class IndexController extends Controller
         $domains = PatentDomain::pluck('name','id');
         $certs = PatentCert::pluck('name','id');
         $lists = $this->goodsServer->paginate(10);
-        dump($lists->toArray());
         //Auth::guard()->user()
         $saleStates = [1=>'待交易',2=>'已预约',3=>'已交易'];
         return view('supply',compact('domains','certs','saleStates','filter','lists'))->with($this->configs);

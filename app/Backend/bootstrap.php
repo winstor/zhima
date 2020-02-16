@@ -21,7 +21,7 @@ use Encore\Admin\Grid;
 use Encore\Admin\Form;
 
 Encore\Admin\Form::forget(['map', 'editor']);
-Encore\Admin\Form::extend('editor', App\Admin\Extensions\Ueditor::class);
+Encore\Admin\Form::extend('ueditor', App\Admin\Extensions\Ueditor::class);
 Encore\Admin\Form::extend('ckeditor', App\Admin\Extensions\Form\CKEditor::class);
 
 Grid::init(function(Grid $grid){

@@ -116,7 +116,8 @@ class MonitorController extends AdminController
                 "<span class='label label-success'>年费正常</span>",
                 "<span class='label label-warning'>待审核</span>",
                 "<span class='label label-info'>待维护</span>",
-                "<span class='label label-danger'>紧急滞纳</span>"
+                "<span class='label label-danger'>紧急滞纳</span>",
+                "<span class='label label-default'>已过期</span>"
             ],$state,'');
         });
         $grid->column('year_fee_msg', '年费信息')->display(function () {
