@@ -23,7 +23,8 @@ class MemberController extends AdminController
             ->title('账户设置')
             ->body(Widgets\Tab::forms([
                 'info'=>Settings\User\UserInfo::class,
-                'password'    => Settings\User\changePassword::class
+                'password'    => Settings\User\changePassword::class,
+                'real'=>Settings\User\UserReal::class
             ]));
     }
     //修改用户信息post

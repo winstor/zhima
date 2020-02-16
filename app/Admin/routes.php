@@ -12,7 +12,6 @@ Route::group([
     ///test
     $router->get('/', 'HomeController@index');
 
-
     $router->get('register', 'AuthController@register')->name('members.register');
     $router->post('register', 'AuthController@postRegister')->name('members.register');
 

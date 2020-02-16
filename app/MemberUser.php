@@ -93,4 +93,8 @@ class MemberUser extends Model implements AuthenticatableContract
     {
         return \Encore\Admin\Facades\Admin::user();
     }
+    public function real()
+    {
+        return $this->hasOne(MemberReal::class,'user_id');
+    }
 }
