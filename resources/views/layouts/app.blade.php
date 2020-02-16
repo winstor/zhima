@@ -17,7 +17,11 @@
             <div class="container">
                 <div class="topBar">
                     <div class="top_left">
-                        您好，jiaowb123，欢迎来到芝麻知识产权服务平台  &nbsp; |   &nbsp;<a href="/members/">个人中心</a> &nbsp;  <a href="/members/LogOut.html">退出</a>
+                        @if(Admin::user())
+                        您好，{{Admin::user()->name}}，欢迎来到芝麻知识产权服务平台  &nbsp; |   &nbsp;<a href="/members">个人中心</a> &nbsp;  <a href="{{admin_url('auth/logout')}}">退出</a>
+                        @else
+                            <a href="{{admin_url('auth/login')}}">登录</a>&nbsp;<a href="{{admin_url('register')}}">|&nbsp;注册</a>
+                        @endif
                     </div>
                     <div class="top_right">
                         <a href="/contact/">&nbsp;企业位置 &nbsp;</a>
