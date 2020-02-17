@@ -27,7 +27,7 @@ class MemberUser extends Model implements AuthenticatableContract
 
         $this->setConnection($connection);
 
-        $this->setTable(config('admin.database.users_table'));
+        $this->setTable('member_users');
 
         parent::__construct($attributes);
     }
@@ -61,13 +61,10 @@ class MemberUser extends Model implements AuthenticatableContract
      *
      * @return BelongsToMany
      */
-    public function roles() : BelongsToMany
+    public function roles(): BelongsToMany
     {
-        $pivotTable = config('admin.database.role_users_table');
-
         $relatedModel = config('admin.database.roles_model');
-
-        return $this->belongsToMany($relatedModel, $pivotTable, 'user_id', 'role_id');
+        return $this->belongsToMany($relatedModel, 'member_role_users', 'user_id', 'role_id');
     }
 
     /**
@@ -75,26 +72,35 @@ class MemberUser extends Model implements AuthenticatableContract
      *
      * @return BelongsToMany
      */
-    public function permissions() : BelongsToMany
+    public function permissions(): BelongsToMany
     {
-        $pivotTable = config('admin.database.user_permissions_table');
-
         $relatedModel = config('admin.database.permissions_model');
 
-        return $this->belongsToMany($relatedModel, $pivotTable, 'user_id', 'permission_id');
+        return $this->belongsToMany($relatedModel, 'member_user_permissions', 'user_id', 'permission_id');
     }
+
     //监控
     public function monitors()
     {
-        return $this->hasMany(PatentMonitor::class,'user_id');
+        return $this->hasMany(PatentMonitor::class, 'user_id');
     }
 
     public static function user()
     {
         return \Encore\Admin\Facades\Admin::user();
     }
+
     public function real()
     {
-        return $this->hasOne(MemberReal::class,'user_id');
+        return $this->hasOne(MemberReal::class, 'user_id');
+    }
+
+    public function applyReal(MemberReal $memberReal)
+    {
+        $memberReal->real_state = 0;
+        $this->real_state = 3;
+        $this->real_type = $memberReal->real_type;
+        $this->real()->save($memberReal);
+        $this->save();
     }
 }

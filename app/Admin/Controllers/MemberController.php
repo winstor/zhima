@@ -4,11 +4,13 @@ namespace App\Admin\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Member;
+use App\MemberUser;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Layout\Content;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Admin\Forms\Settings;
 use Encore\Admin\Widgets;
@@ -106,5 +108,15 @@ class MemberController extends AdminController
             return back();
         });
         return $form;
+    }
+    public function realImageShow($user_id,$imageName)
+    {
+        $user = MemberUser::user();
+        $path = $user_id.'/'.$imageName;
+        if($user_id != $user['id'] || !Storage::disk('member_real')->exists($path)){
+            abort('404');
+        }
+        header('content-type:image/png;');
+        echo Storage::disk('member_real')->get($path);
     }
 }

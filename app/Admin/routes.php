@@ -43,4 +43,6 @@ Route::group([
     $router->post('uploadPatent','PatentController@import')->name('members.uploadPatent');
     $router->get('downloadPatent','PatentController@download')->name('members.downloadPatent');
 
+    $router->get('realImage/{user_id}/{imageName}','MemberController@realImageShow')->name('members.realImage');
+
 });

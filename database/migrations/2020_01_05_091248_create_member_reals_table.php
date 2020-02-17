@@ -21,6 +21,9 @@ class CreateMemberRealsTable extends Migration
             $table->string('license_picture')->nullable()->comment('营业执照');
             $table->tinyInteger('real_state')->default(0)->comment('认证状态');
             $table->tinyInteger('real_type')->default(0)->comment('认证类型');
+
+            $table->integer('review_user_id')->default(0)->comment('审核人ID');
+            $table->string('review_remark')->nullable()->comment('审核备注');
             $table->timestamps();
             $table->index('user_id');
         });
