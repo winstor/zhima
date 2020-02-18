@@ -53,16 +53,6 @@
                         <a href="/" class="r41">忘记密码？</a>
                         <a href="{{route('members.register')}}"class="r42">免费注册></a>
                     </div>
-                    <div class="col-xs-8">
-                        @if(config('admin.auth.remember'))
-                            <div class="checkbox icheck">
-                                <label>
-                                    <input type="checkbox" name="remember" value="1" {{ (!old('username') || old('remember')) ? 'checked' : '' }}>
-                                    {{ trans('admin.remember_me') }}
-                                </label>
-                            </div>
-                        @endif
-                    </div>
                     <div class="r5">
                         <input id="Submit1" type="submit"  class="button" value="登录" />
                     </div>
