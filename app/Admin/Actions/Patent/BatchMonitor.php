@@ -17,7 +17,6 @@ class BatchMonitor extends BatchAction
         foreach ($collection as $model) {
             if($model->user_id == $user->id &&  !$model->monitor_state){
                 $model->monitor_state = $monitor_end_time?1:2;
-                $model->monitor_add_time = now();
                 $model->monitor_end_time = $monitor_end_time;
                 $model->save();
             }

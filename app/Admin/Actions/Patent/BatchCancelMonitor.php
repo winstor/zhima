@@ -17,7 +17,6 @@ class BatchCancelMonitor extends BatchAction
         foreach ($collection as $model) {
             if($model->user_id == $user->id){
                 $model->monitor_state = 0;
-                $model->monitor_add_time = null;
                 $model->monitor_end_time = null;
                 $model->fee_remark = '';
                 $model->save();

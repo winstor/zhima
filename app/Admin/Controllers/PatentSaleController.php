@@ -83,7 +83,6 @@ class PatentSaleController extends AdminController
         $show->field('sale_state', __('Sale state'));
         $show->field('sale_add_time', __('Sale add time'));
         $show->field('monitor_state', __('Monitor state'));
-        $show->field('monitor_add_time', __('Monitor add time'));
         $show->field('monitor_end_time', __('Monitor end time'));
         $show->field('fee_remark', __('Fee remark'));
         $show->field('created_at', __('Created at'));
@@ -121,7 +120,6 @@ class PatentSaleController extends AdminController
         $form->switch('sale_state', __('Sale state'));
         $form->datetime('sale_add_time', __('Sale add time'))->default(date('Y-m-d H:i:s'));
         $form->switch('monitor_state', __('Monitor state'));
-        $form->datetime('monitor_add_time', __('Monitor add time'))->default(date('Y-m-d H:i:s'));
         $form->datetime('monitor_end_time', __('Monitor end time'))->default(date('Y-m-d H:i:s'));
         $form->textarea('fee_remark', __('Fee remark'));
 
