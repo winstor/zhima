@@ -191,30 +191,7 @@ class MonitorController extends AdminController
     {
         $show = new Show(Patent::findOrFail($id));
 
-        $show->field('id', __('Id'));
-        $show->field('user_id', __('User id'));
-        $show->field('patent_sn', __('Patent sn'));
-        $show->field('patent_name', __('Patent name'));
-        $show->field('patent_person', __('Patent person'));
-        $show->field('apply_date', __('Apply date'));
-        $show->field('patent_domain_id', __('Patent domain id'));
-        $show->field('patent_type_id', __('Patent type id'));
-        $show->field('patent_case_id', __('Patent case id'));
-        $show->field('patent_cert_id', __('Patent cert id'));
-        $show->field('electron_user_id', __('Electron user id'));
-        $show->field('inventor', __('Inventor'));
-        $show->field('remark', __('Remark'));
-        $show->field('image', __('Image'));
-        $show->field('price', __('Price'));
-        $show->field('is_cheap', __('Is cheap'));
-        $show->field('is_best', __('Is best'));
-        $show->field('sale_state', __('Sale state'));
-        $show->field('monitor_state', __('Monitor state'));
-        $show->field('monitor_end_time', __('Monitor end time'));
-        $show->field('fee_remark', __('Fee remark'));
-        $show->field('created_at', __('Created at'));
-        $show->field('updated_at', __('Updated at'));
-        $show->field('deleted_at', __('Deleted at'));
+
 
         return $show;
     }
