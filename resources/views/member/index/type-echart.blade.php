@@ -6,7 +6,7 @@
         <ul class="d-mimi">
             @foreach($types as $key=>$value)
             <li class="d-li{{$key}}">
-                <a style="text-decoration:none" target="_blank" href="/patent/search.html?page.currentPage=1&patentType=1">
+                <a style="text-decoration:none" target="_blank" href="{{route('members.patents.index',['patent_type_id'=>$key],false)}}">
                     <span>{{$value}}</span>
                     <b id="patentType1">{{$counts[$key]??0}}</b>
                 </a>
