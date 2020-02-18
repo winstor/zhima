@@ -8,9 +8,9 @@ class MonitorSyncApiServer
 {
     public function getMonitors()
     {
-        $data = \App\PatentMonitor::where('monitor_state',1)
+        $lists = \App\PatentMonitor::where('monitor_state',1)
             ->where('monitor_end_time','>=',date('Y-m-d'))->pluck('patent_sn');
-        return $data;
+        return ['code'=>'success','total'=>$lists->count(),'data'=>$lists->toArray()];
     }
 
     public function syncAnnualFee($data)
