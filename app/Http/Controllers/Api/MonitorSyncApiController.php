@@ -17,9 +17,9 @@ class MonitorSyncApiController extends Controller
 
     public function index($type)
     {
-        if($type == 'get-patents'){
+        if($type == 'get'){
             return response()->json($this->monitorSyncApiServer->getMonitors());
-        }elseif($type == 'sync-patents'){
+        }elseif($type == 'sync'){
             $res= $this->monitorSyncApiServer->syncAnnualFee(request()->all());
             return response()->json(['code'=>$res?true:false]);
         }

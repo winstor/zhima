@@ -17,5 +17,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::group(['namespace'=>'Api','middleware' => ['api.patent.monitor']], function (\Illuminate\Routing\Router $router) {
-    $router->get('monitor/{type}','MonitorSyncApiController@index');
+    $router->any('monitor/{type}','MonitorSyncApiController@index');
 });
