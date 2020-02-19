@@ -35,6 +35,7 @@ class MemberController extends AdminController
         $grid->column('real_state', __('是否认证'))
             ->using(['未认证','已认证','认证失败','待审核'],'')
             ->dot(['default','success','default','danger'])->sortable();
+        $grid->column('monitor_end_time', __('监控到期时间'));
         $grid->column('created_at', __('注册时间'));
         Admin::script('$("td").css("vertical-align","middle")');
         $grid->disableExport();

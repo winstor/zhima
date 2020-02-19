@@ -437,6 +437,10 @@ return [
                 'amap' => [
                     'api_key' => '3693fe745aea0df8852739dac08a22fb',
                 ],
+                'login' => [
+                    // set to false if you want to disable this extension
+                    'enable' => true,
+                ]
             ]
         ]
     ],

@@ -12,7 +12,7 @@ class AuthController extends BaseAuthController
     protected function loginValidator(array $data)
     {
         return Validator::make($data, [
-            $this->username()   => 'required',
+            $this->username()   => 'required|string|exists:member_users,username,enabled,1',
             'password'          => 'required',
         ],[
             'username.required'=>'账号不能为空',
