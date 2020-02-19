@@ -46,3 +46,11 @@ Form::init(function (Form $form) {
 \Encore\Admin\Admin::navbar(function (\Encore\Admin\Widgets\Navbar $navBar) {
     $navBar->left(new \App\Backend\Extensions\Nav\Audit());
 });
+
+\Encore\Admin\Show::init(function(\Encore\Admin\Show $show){
+    $show->panel()
+        ->tools(function ($tools) {
+            $tools->disableEdit();
+            $tools->disableDelete();
+        });;
+});

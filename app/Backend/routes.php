@@ -42,4 +42,6 @@ Route::group([],function($router){
     //专利监控
     $router->resource('patent-monitors', 'PatentMonitorController',['only'=>['index','edit','update','show']]);
 
+    $router->get('MemberRealImages/{user_id}/{imageName}','MemberRealController@realImageShow')->name('MemberRealImages');
+
 });
