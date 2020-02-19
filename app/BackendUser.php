@@ -15,23 +15,6 @@ class BackendUser extends Model implements AuthenticatableContract
     use Authenticatable, AdminBuilder, HasPermissions;
 
     protected $fillable = ['username', 'password', 'name', 'avatar'];
-
-    /**
-     * Create a new Eloquent model instance.
-     *
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        $connection = config('admin.database.connection') ?: config('database.default');
-
-        $this->setConnection($connection);
-
-        $this->setTable(config('admin.database.users_table'));
-
-        parent::__construct($attributes);
-    }
-
     /**
      * Get avatar attribute.
      *
@@ -63,11 +46,10 @@ class BackendUser extends Model implements AuthenticatableContract
      */
     public function roles() : BelongsToMany
     {
-        $pivotTable = config('admin.database.role_users_table');
 
         $relatedModel = config('admin.database.roles_model');
 
-        return $this->belongsToMany($relatedModel, $pivotTable, 'user_id', 'role_id');
+        return $this->belongsToMany($relatedModel, 'backend_role_users', 'user_id', 'role_id');
     }
 
     /**
@@ -77,10 +59,11 @@ class BackendUser extends Model implements AuthenticatableContract
      */
     public function permissions() : BelongsToMany
     {
-        $pivotTable = config('admin.database.user_permissions_table');
-
         $relatedModel = config('admin.database.permissions_model');
-
-        return $this->belongsToMany($relatedModel, $pivotTable, 'user_id', 'permission_id');
+        return $this->belongsToMany($relatedModel, 'backend_user_permissions', 'user_id', 'permission_id');
+    }
+    public static function user()
+    {
+        return auth('backend')->user();
     }
 }

@@ -17,22 +17,6 @@ class MemberUser extends Model implements AuthenticatableContract
     protected $fillable = ['username', 'password', 'name', 'avatar'];
 
     /**
-     * Create a new Eloquent model instance.
-     *
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        $connection = config('admin.database.connection') ?: config('database.default');
-
-        $this->setConnection($connection);
-
-        $this->setTable('member_users');
-
-        parent::__construct($attributes);
-    }
-
-    /**
      * Get avatar attribute.
      *
      * @param string $avatar
@@ -87,7 +71,8 @@ class MemberUser extends Model implements AuthenticatableContract
 
     public static function user()
     {
-        return \Encore\Admin\Facades\Admin::user();
+        return auth('web')->user();
+        //return \Encore\Admin\Facades\Admin::user();
     }
 
     public function real()

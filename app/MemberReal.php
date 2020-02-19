@@ -13,6 +13,6 @@ class MemberReal extends Model
     }
     public function reviewUser()
     {
-        return $this->belongsTo(AdminUser::class,'review_user_id','id');
+        return $this->belongsTo(BackendUser::class,'review_user_id','id');
     }
 }
