@@ -7,6 +7,7 @@ use App\Admin\Actions\Patent\BatchMonitor;
 use App\Admin\Actions\Patent\BatchRealDelete;
 use App\Admin\Actions\Patent\BatchRecovery;
 use App\Member;
+use App\MemberUser;
 use App\Patent;
 use App\PatentDomain;
 use App\PatentType;
@@ -34,7 +35,7 @@ class PatentRecycleController extends AdminController
     {
         config(['member.submit'=>'22']);
         $grid = new Grid(new Patent);
-        $user = Member::user();
+        $user = MemberUser::user();
         $grid->column('id', __('序号'));
         $grid->model()->where('user_id',$user->id)->with(['type','case'])
             ->whereNotNull('deleted_at')->withTrashed();

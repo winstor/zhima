@@ -38,19 +38,16 @@ class PatentController extends AdminController
             $filter->column(1/3, function (Grid\Filter $filter) {
                 $filter->where(function ($query) {
                     $query->whereHas('member', function ($query) {
-                        $query->where('username', "{$this->input}")->orWhere('name', "{$this->input}");
+                        $query->where('username', "{$this->input}")
+                            ->orWhere('name', "{$this->input}")
+                            ->orWhere('mobile', "{$this->input}")
+                            ->orWhere('email', "{$this->input}");
                     });
 
-                }, '会员名');
+                }, '会员名')->placeholder('会员账户/名称/电话/邮箱');
                 $filter->equal('is_monitor','监控状态')->select(['未监控','监控中']);
             });
             $filter->column(1/3, function (Grid\Filter $filter) {
-                $filter->where(function ($query) {
-                    $query->whereHas('member', function ($query) {
-                        $query->where('mobile', "{$this->input}");
-                    });
-
-                }, '会员电话');
                 $filter->equal('patent_domain_id','热门领域')->select(PatentDomain::pluck('name','id'));
             });
         });
@@ -80,12 +77,16 @@ class PatentController extends AdminController
             return '<span class="label label-default">未监控</span>';
         });
         $grid->column('apply_date', __('申请日期'));
-        $grid->column('created_at', __('更新创建日期'))->display(function($created_at){
-            return $this->updated_at.'<br/>'.$created_at;
-        });
+        $grid->column('created_at', __('添加时间'));
         //$grid->column('updated_at', __('admin.updated_at'));
         $grid->disableCreateButton();
         Admin::script('$("td").css("vertical-align","middle")');
+        $grid->disableActions();
+        $grid->tools(function(Grid\Tools $tools){
+            $tools->batch(function(Grid\Tools\BatchActions $actions){
+                $actions->disableDelete();
+            });
+        });
         return $grid;
     }
 

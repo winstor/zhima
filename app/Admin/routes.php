@@ -14,11 +14,12 @@ Route::group([
 
     $router->get('register', 'AuthController@register')->name('members.register');
     $router->post('register', 'AuthController@postRegister')->name('members.register');
-
-    //我的专利
-    $router->resource('patents','PatentController')->names('members.patents');
-    //专利及监控
-    $router->resource('monitors','MonitorController')->names('members.monitors');
+    $router->group(['middleware'=>['member.operation']],function(Router $router){
+        //我的专利
+        $router->resource('patents','PatentController')->names('members.patents');
+        //专利及监控
+        $router->resource('monitors','MonitorController')->names('members.monitors');
+    });
 
     $router->resource('electron-accounts', 'ElectronUserController')->names('members.electron-accounts');
 
@@ -45,4 +46,9 @@ Route::group([
 
     $router->get('realImage/{user_id}/{imageName}','MemberController@realImageShow')->name('members.realImage');
 
+    $router->resource('auth/roles', 'RoleController')->names('admin.auth.roles');
+    $router->resource('auth/users', 'RoleController')->names('admin.auth.users');
+    $router->resource('auth/permissions', 'RoleController')->names('admin.auth.permissions');
+    //$router->resource('auth/menu', 'RoleController')->names('admin.auth.menu');
+    //$router->resource('auth/logs', 'RoleController', ['only' => ['index', 'destroy']])->names('admin.auth.logs');
 });

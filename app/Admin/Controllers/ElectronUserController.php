@@ -4,6 +4,7 @@ namespace App\Admin\Controllers;
 
 use App\ElectronUser;
 use App\Member;
+use App\MemberUser;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -26,7 +27,7 @@ class ElectronUserController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new ElectronUser);
-        $grid->model()->where('user_id',Member::user()->id)->with('member');
+        $grid->model()->where('user_id',MemberUser::user()->id)->with('member');
         $grid->column('id', __('ID'));
         $grid->column('username', __('账户'));
         $grid->column('password', __('密码'));
@@ -73,7 +74,7 @@ class ElectronUserController extends AdminController
         $form->textarea('remark', __('备注'));
         $form->hidden('user_id');
         $form->saving(function(Form $form){
-            $user = Member::user();
+            $user = MemberUser::user();
             if(!$form->model()->id){
                 $form->user_id = $user->id;
             }elseif($form->model()->user_id != $user->id){

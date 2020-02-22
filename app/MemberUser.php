@@ -5,6 +5,7 @@ namespace App;
 use Encore\Admin\Auth\Database\HasPermissions;
 use Encore\Admin\Traits\AdminBuilder;
 use Illuminate\Auth\Authenticatable;
+use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -88,4 +89,15 @@ class MemberUser extends Model implements AuthenticatableContract
         $this->real()->save($memberReal);
         $this->save();
     }
+    //用户专利
+    public function patents()
+    {
+        return $this->hasMany(Patent::class,'user_id');
+    }
+
+//    public function can($ability, $arguments = [])
+//    {
+//        return app(Gate::class)->forUser($this)->check($ability, $arguments);
+//    }
+
 }

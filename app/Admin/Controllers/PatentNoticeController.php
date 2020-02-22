@@ -4,6 +4,7 @@ namespace App\Admin\Controllers;
 
 use App\Admin\Actions\Post\ImportPost;
 use App\Member;
+use App\MemberUser;
 use App\PatentNotice;
 use App\Services\NoticeServer;
 use Carbon\Carbon;
@@ -114,7 +115,7 @@ class PatentNoticeController extends AdminController
                 admin_toastr('上传文件过大','error');
                 return back();
             }
-            $user  = Member::user();
+            $user  = MemberUser::user();
             try{
                $this->noticeServer->importNoticeFile($file,$user->id);
             }catch (\Exception $exception){

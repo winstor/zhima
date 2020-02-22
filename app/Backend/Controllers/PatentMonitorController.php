@@ -38,7 +38,7 @@ class PatentMonitorController extends AdminController
      */
     protected function grid()
     {
-        $patentType = PatentType::pluck('name','id')->toArray();
+        //$patentType = PatentType::pluck('name','id')->toArray();
         $grid = new Grid(new PatentMonitor());
         $grid->filter(function(Grid\Filter $filter){
             $filter->disableIdFilter();
@@ -103,6 +103,7 @@ class PatentMonitorController extends AdminController
             //$tools->append(new BatchMonitorExport());
             $tools->append(new BatchMonitorAddTime());
         });
+        $grid->disableActions();
         return $grid;
     }
 

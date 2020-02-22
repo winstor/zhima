@@ -3,20 +3,22 @@
 namespace App\Admin\Controllers;
 use App\Admin\Actions\Patent\BatchAddGoods;
 use App\Admin\Actions\Patent\BatchMonitor;
+use App\Admin\Extensions\Grid\Actions\Delete;
 use App\Exceptions\FailMsgException;
 use App\Exports\InvoiceExport;
 use App\Imports\PatentImport;
 use App\Member;
 use App\Admin\Extensions\Exporter\PatentExporter;
 use App\Admin\Extensions\patent\HeaderSearch;
+use App\MemberUser;
 use App\Patent;
 use App\PatentCase;
 use App\PatentCert;
 use App\PatentDomain;
 use App\PatentType;
+use App\Repositories\Member\PatentRepository;
 use App\Services\MemberServer;
 use Encore\Admin\Admin;
-use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
@@ -24,12 +26,13 @@ use Encore\Admin\Show;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
-class PatentController extends AdminController
+class PatentController extends BaseController
 {
     protected $memberServer;
-    public function __construct(MemberServer $memberServer)
+    public function __construct(MemberServer $memberServer,PatentRepository $repository)
     {
         $this->memberServer = $memberServer;
+        $this->repository = $repository;
     }
 
     /**
@@ -40,15 +43,12 @@ class PatentController extends AdminController
     protected $title = '专利';
     public function index(Content $content)
     {
-        //Admin::script('$(".content").css("padding-top", "0")');
-        //Admin::script('$(".content-wrapper").css("background", "#FFFFFF")');
         return $content
             ->title('我的专利')
             ->description(' ')
             ->row('<link rel="stylesheet" href="/css/d_newscss.css">')
             ->body($this->grid());
     }
-
     /**
      * Make a grid builder.
      *
@@ -106,7 +106,8 @@ class PatentController extends AdminController
         $grid->disableActions(false);
         $grid->actions(function(Grid\Displayers\Actions $actions){
             $actions->disableView();
-            $actions->disableDelete();
+            //$actions->disableDelete();
+            $actions->add(new Delete());
         });
 
         return $grid;
@@ -174,28 +175,6 @@ class PatentController extends AdminController
     {
         $show = new Show(Patent::findOrFail($id));
 
-        $show->field('id', __('Id'));
-        $show->field('user_id', __('User id'));
-        $show->field('electron_user_id', __('Electron user id'));
-        $show->field('patent_sn', __('Patent sn'));
-        $show->field('patent_name', __('Patent name'));
-        $show->field('college_id', __('College id'));
-        $show->field('Patent_person', __('Patent person'));
-        $show->field('inventor', __('Inventor'));
-        $show->field('patent_domain_id', __('Patent domain id'));
-        $show->field('patent_type_id', __('Patent type id'));
-        $show->field('patent_state_id', __('Patent state id'));
-        $show->field('cert_state_id', __('Cert state id'));
-        $show->field('apply_date', __('Apply date'));
-        $show->field('patent_remark', __('Patent remark'));
-        $show->field('image', __('Image'));
-        $show->field('is_monitor', __('Is monitor'));
-        $show->field('monitor_state', __('Monitor state'));
-        $show->field('monitor_date', __('Monitor date'));
-        $show->field('fee_remark', __('Fee remark'));
-        $show->field('created_at', __('Created at'));
-        $show->field('updated_at', __('Updated at'));
-
         return $show;
     }
 
@@ -217,12 +196,18 @@ class PatentController extends AdminController
         $form->datetime('apply_date', __('申请日期'))->format('YYYY-MM-DD')->required();
         $form->hidden('user_id');
         $form->saving(function(Form $form){
-            $user = Member::user();
+            $user = MemberUser::user();
             if($form->model()->user_id && $form->model()->user_id != $user->id){
                 return back();
             }
             $form->user_id = $user->id;
         });
         return $form;
+    }
+    public function edit($id, Content $content)
+    {
+       // dump($this->repository->find($id));exit;
+       // $this->can('update',app($this->model)->find($id));
+        return parent::edit($id, $content);
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Member;
 use App\Members\Extensions\ECharts;
 use App\Admin\Extensions\patent\TypeEChart;
+use App\MemberUser;
 use App\Patent;
 use App\PatentCase;
 use Encore\Admin\Admin;
@@ -38,7 +39,7 @@ class HomeController extends Controller
     }
     protected function case()
     {
-        $user = Member::user();
+        $user = MemberUser::user();
         $patentCases = PatentCase::get(['id','name']);
         $caseCount = Patent::select(DB::raw('count(*) as count, patent_case_id'))->where('user_id',$user->id)
             ->groupBy('patent_case_id')

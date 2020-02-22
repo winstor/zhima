@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\CheckMemberOperation;
 use App\Http\Middleware\CheckPatentMonitorApi;
 use App\Http\Middleware\EnableRoutePermission;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
@@ -64,6 +65,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'enable_route_permission'=>EnableRoutePermission::class,
         'api.patent.monitor'=>CheckPatentMonitorApi::class,
+        'member.operation'=>CheckMemberOperation::class,
     ];
 
     /**

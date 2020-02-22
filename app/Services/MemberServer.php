@@ -17,7 +17,7 @@ class MemberServer
     }
     public function getUserId()
     {
-        return Member::user()->id;
+        return MemberUser::user()->id;
     }
     public function realCount()
     {

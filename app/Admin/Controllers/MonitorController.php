@@ -5,10 +5,12 @@ namespace App\Admin\Controllers;
 use App\Admin\Actions\Patent\BatchCancelMonitor;
 use App\Member;
 use App\Admin\Extensions\Exporter\MonitorExporter;
+use App\MemberUser;
 use App\Patent;
 use App\PatentCase;
 use App\PatentMonitor;
 use App\PatentType;
+use App\Repositories\Member\PatentMonitorRepository;
 use App\Services\MemberServer;
 use App\Services\PatentMonitorServer;
 use Carbon\Carbon;
@@ -23,11 +25,12 @@ class MonitorController extends AdminController
 {
     protected $memberServer;
     protected $patentMonitorServer;
-
-    public function __construct(MemberServer $memberServer, PatentMonitorServer $patentMonitorServer)
+    public $repository;
+    public function __construct(MemberServer $memberServer, PatentMonitorServer $patentMonitorServer,PatentMonitorRepository $repository)
     {
         $this->memberServer = $memberServer;
         $this->patentMonitorServer = $patentMonitorServer;
+        $this->repository = $repository;
     }
 
     /**
@@ -96,7 +99,7 @@ class MonitorController extends AdminController
                 }, '缴费截止日期止')->date();
             });
         });
-        $user = Member::user();
+        $user = MemberUser::user();
         $grid->model()->with(['payLogs']);
         $grid->model()->where('user_id', $user->id)->where('monitor_state','>=', 1);
         //$grid->column('id', __('序号'));
