@@ -34,7 +34,7 @@
                         @endif
                         <label>
                             <img src="/images/rens1.png" />
-                            <input id="username" name="username" value="{{ old('username') }}" type="text" autofocus="autofocus" maxlength="30" placeholder="请输入用户名" />
+                            <input id="username" name="username" value="{{ old('username') }}" type="text" autofocus="autofocus" maxlength="30" placeholder="请输入用户名" autocomplete="off"/>
                         </label>
                     </div>
                     <div class="r2 {!! !$errors->has('password') ?: 'has-error' !!}" >
@@ -45,7 +45,7 @@
                         @endif
                         <label>
                             <img src="/images/rens2.png" />
-                            <input id="password" name="password" type="password" maxlength="30" autofocus="autofocus" placeholder="请输入密码" />
+                            <input id="password" name="password" type="password" maxlength="30" autofocus="autofocus" placeholder="请输入密码" autocomplete="off"/>
                         </label>
                     </div>
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
