@@ -3,10 +3,11 @@
 namespace App\Admin\Actions\Patent;
 
 use App\Admin\Actions\BatchAction;
+use App\Patent;
 use App\Services\MemberServer;
 use Illuminate\Database\Eloquent\Collection;
 
-class BatchRealDelete extends BatchAction
+class BatchTrashDelete extends BatchAction
 {
     public $name = '永久删除';
 
@@ -15,7 +16,7 @@ class BatchRealDelete extends BatchAction
         $memberServer = new MemberServer();
         $user = $memberServer->getUser();
         $collection->filter(function($model)use($user){
-            return $user->id == $model->user_id && $model->deleted_at;
+            return ($model instanceof Patent) && $user->id == $model->user_id && $model->deleted_at;
         })->each->forceDelete();
         return $this->response()->swal()->success('删除成功')->refresh();
     }
@@ -30,5 +31,4 @@ HTML;
     {
         $this->confirm('<span>是否永久删除？<br/><br/><h5>永久删除当前专利将不可恢复！</h5><br/><br/></span>');
     }
-
 }

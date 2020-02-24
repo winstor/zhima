@@ -43,6 +43,11 @@ class Patent extends Model
     {
         return $this->hasOne(Good::class,'patent_id');
     }
+    //售卖
+    public function sell()
+    {
+        return $this->hasOne(PatentSell::class);
+    }
     public function monitor()
     {
         return $this->hasOne(PatentMonitor::class,'patent_id');

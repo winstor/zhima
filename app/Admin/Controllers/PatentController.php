@@ -2,7 +2,9 @@
 
 namespace App\Admin\Controllers;
 use App\Admin\Actions\Patent\BatchAddGoods;
+use App\Admin\Actions\Patent\BatchDelete;
 use App\Admin\Actions\Patent\BatchMonitor;
+use App\Admin\Actions\Patent\BatchSell;
 use App\Admin\Extensions\Grid\Actions\Delete;
 use App\Exceptions\FailMsgException;
 use App\Exports\InvoiceExport;
@@ -15,6 +17,7 @@ use App\Patent;
 use App\PatentCase;
 use App\PatentCert;
 use App\PatentDomain;
+use App\PatentSell;
 use App\PatentType;
 use App\Repositories\Member\PatentRepository;
 use App\Services\MemberServer;
@@ -86,7 +89,7 @@ class PatentController extends BaseController
         $grid->column('monitor_state','监控状态')->using(['未监控','已监控','待审核'])
             ->label(['success','danger','warning']);
 
-        $grid->column('sale_state','售卖状态')->using(Patent::SALE_STATE,'未发布')
+        $grid->column('sell.sale_state','售卖状态')->using(PatentSell::SELL_STATE,'未发布')
             ->label(['success','danger','warning','default']);
         $grid->disableCreateButton();
         Admin::script('$("td").css("vertical-align","middle")');
@@ -97,19 +100,23 @@ class PatentController extends BaseController
         $grid->disableColumnSelector();
         $grid->disableBatchActions(false);
         $grid->batchActions(function(Grid\Tools\BatchActions $batchActions){
+            //$batchActions->disableDelete();
+            //$batchActions->add(new BatchDelete());
             //$batchActions->disableDeleteAndHodeSelectAll();
         });
         $grid->tools(function(Grid\Tools $tools){
-            $tools->append(new BatchAddGoods());
+            $tools->append(new BatchSell());
             $tools->append(new BatchMonitor());
         });
         $grid->disableActions(false);
         $grid->actions(function(Grid\Displayers\Actions $actions){
             $actions->disableView();
-            //$actions->disableDelete();
+            $actions->disableDelete();
             $actions->add(new Delete());
+            if(!empty($actions->row->sell->sale_state)){
+                $actions->disableEdit();
+            }
         });
-
         return $grid;
     }
 
@@ -203,11 +210,5 @@ class PatentController extends BaseController
             $form->user_id = $user->id;
         });
         return $form;
-    }
-    public function edit($id, Content $content)
-    {
-       // dump($this->repository->find($id));exit;
-       // $this->can('update',app($this->model)->find($id));
-        return parent::edit($id, $content);
     }
 }

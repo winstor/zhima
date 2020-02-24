@@ -26,4 +26,10 @@ class PatentPolicy
     {
         return $user->id == $patent->user_id;
     }
+
+    public function destroy(MemberUser $user,Patent $patent)
+    {
+        return $user->id == $patent->user_id;
+    }
+
 }

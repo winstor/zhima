@@ -19,6 +19,10 @@ Route::group([
         $router->resource('patents','PatentController')->names('members.patents');
         //专利及监控
         $router->resource('monitors','MonitorController')->names('members.monitors');
+
+        $router->resource('patentSells', 'PatentSellController')->names('members.patentSells');
+        //回收站
+        $router->get('patentTrashes', 'PatentTrashController@index')->name('members.patentTrashes.index');
     });
 
     $router->resource('electron-accounts', 'ElectronUserController')->names('members.electron-accounts');
@@ -31,8 +35,7 @@ Route::group([
     $router->post('noticeUpload','PatentNoticeController@store')->name('members.noticeUpload');
 
 
-    //回收站
-    $router->resource('patentRecycles', 'PatentRecycleController')->names('members.patentRecycles');
+
 
     $router->get('userDetail', 'MemberController@index')->name('users.index');
     $router->put('userDetail', 'MemberController@modify')->name('users.modify');

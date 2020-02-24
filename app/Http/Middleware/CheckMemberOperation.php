@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\MemberUser;
+use App\Patent;
 use App\Repositories\Eloquent\Repository;
 use Closure;
 use Illuminate\Contracts\Auth\Access\Gate;
@@ -18,7 +19,7 @@ class CheckMemberOperation
      */
     public function handle($request, Closure $next)
     {
-
+        $actionMethod = $request->route()->getActionMethod();
         $id = current($request->route()->parameters());
         if($id == null){
             return $next($request);
@@ -28,10 +29,22 @@ class CheckMemberOperation
         if($repository  instanceof Repository){
             if(is_numeric($id)){
                 $arguments = $repository->find($id);
+            }elseif($actionMethod == 'destroy'){
+                $arguments = $repository->find(explode(',',$id));
+                foreach($arguments as $argument){
+                    if(!$repository->can($actionMethod,$argument)){
+                        $response = [
+                            'status'  => false,
+                            'message' => '请选择可删除部分',
+                        ];
+                        return response()->json($response);
+                    }
+                }
+                return $next($request);
             }else{
                 $arguments = $repository->model();
             }
-            if(!$repository->can($request->route()->getActionMethod(),$arguments)){
+            if(!$repository->can($actionMethod,$arguments)){
                 abort(404);
             }
         }else{

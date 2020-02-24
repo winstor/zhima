@@ -38,7 +38,7 @@ class PatentNoticeController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new PatentNotice());
-        $grid->model()->with(['patent.type','patent.case']);
+        $grid->model()->has('patent')->with(['patent.type','patent.case']);
         $grid->column('id', __('ID'));
         $grid->column('patent.type', __('专利信息'))->display(function($type){
             return $type['logo_url'];

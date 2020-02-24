@@ -3,6 +3,7 @@
 namespace App\Admin\Actions\Patent;
 
 use App\Admin\Actions\BatchAction;
+use App\Patent;
 use App\Services\MemberServer;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -14,11 +15,12 @@ class BatchRecovery extends BatchAction
     {
         $memberServer = new MemberServer();
         $user = $memberServer->getUser();
-        $collection->filter(function($model)use($user){
-            return $user->id == $model->user_id;
+        $collection->filter(function ($model) use ($user) {
+            return ($model instanceof Patent) && $user->id == $model->user_id;
         })->each->restore();
         return $this->response()->swal()->success('还原操作成功')->refresh();
     }
+
     public function rename()
     {
         return <<<HTML

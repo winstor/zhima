@@ -46,7 +46,7 @@
             </a>
         </li>
         <li class="col-md-6">
-            <a style="text-decoration:none" target="_blank" href="{{route('members.patentRecycles.index',[],false)}}">
+            <a style="text-decoration:none" target="_blank" href="{{route('members.patentTrashes.index',[],false)}}">
                 <img src="/new_temp/images/sune2.png" />
                 <span>回收站</span>
             </a>
