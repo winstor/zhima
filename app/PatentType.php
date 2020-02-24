@@ -11,6 +11,9 @@ class PatentType extends Model
     protected $appends = ['logo_url'];
     public function getLogoUrlAttribute()
     {
-        return Storage::disk('public')->url($this->attributes['logo']);
+        if(!empty($this->attributes['logo']) && Storage::disk('public')->exists($this->attributes['logo'])){
+            return Storage::disk('public')->url($this->attributes['logo']);
+        }
+        return '';
     }
 }
