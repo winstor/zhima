@@ -53,9 +53,10 @@ class PatentController extends AdminController
         });
         //$grid->column('id', __('ID'));
         $grid->model()->with(['type','domain','member']);
-        $grid->column('patent_sn', __('专利信息'))->display(function($patent_sn){
-            return $patent_sn.'<br/>'.$this->patent_name;
-        });
+        $grid->column('type.logo', __('专利信息'))->image('/', '', 30)
+            ->display(function ($logo) {
+                return $logo . $this->patent_sn . '<br/>' . $this->patent_name;
+            });
         $grid->column('college.name', __('专利权人/高校'))->display(function($college_name){
             return $this->patent_person.'<br/>'.$college_name;
         });

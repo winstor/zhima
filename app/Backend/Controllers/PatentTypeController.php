@@ -35,7 +35,8 @@ class PatentTypeController extends AdminController
         Admin::script('$("td").css("vertical-align","middle")');
         $grid->disableFilter();
         $grid->disableExport();
-        //$grid->disableBatchActions();
+        $grid->disableBatchActions();
+        //$grid->disableColumnSelector();
         return $grid;
     }
 
