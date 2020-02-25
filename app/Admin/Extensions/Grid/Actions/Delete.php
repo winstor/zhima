@@ -10,15 +10,17 @@ use Encore\Admin\Actions\RowAction;
 use Illuminate\Database\Eloquent\Model;
 class Delete extends RowAction
 {
-    public function passesAuthorization($model = null)
+    public function authorize(MemberUser $user,$model)
     {
-        if(!$model->user_id){
-            return false;
-        }
-        $user = MemberUser::user();
-        return $user && $user->id == $model->user_id;
+        return $user->id == $model->user_id;
     }
-
+    /**
+     * @return mixed
+     */
+    public function failedAuthorization()
+    {
+        return $this->response()->error(__('admin.deny'))->send();
+    }
     /**
      * @return array|null|string
      */
@@ -38,15 +40,8 @@ class Delete extends RowAction
             'failed'    => trans('admin.delete_failed'),
             'succeeded' => trans('admin.delete_succeeded'),
         ];
-
         try {
-            $user = MemberUser::user();
-            if($model->user_id == $user->id){
-                $model->delete();
-            }else{
-                abort(404);
-            }
-
+            $model->delete();
         } catch (\Exception $exception) {
             return $this->response()->error("{$trans['failed']} : {$exception->getMessage()}");
         }

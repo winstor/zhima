@@ -2,12 +2,20 @@
 
 namespace App\Admin\Controllers;
 
+use App\Admin\Actions\PatentSell\BatchPatentOnSell;
+use App\Admin\Actions\PatentSell\BatchPatentSellDelete;
+use App\Admin\Actions\PatentSell\BatchPatentSellEdit;
+use App\Admin\Actions\PatentSell\BatchSell;
 use App\Good;
+use App\PatentCase;
+use App\PatentCert;
 use App\PatentSell;
+use App\PatentType;
 use Encore\Admin\Admin;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
+use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
 
 class PatentSellController extends AdminController
@@ -18,6 +26,14 @@ class PatentSellController extends AdminController
      * @var string
      */
     protected $title = '我发布的专利';
+    public function index(Content $content)
+    {
+        return $content
+            ->title($this->title())
+            ->row('<link rel="stylesheet" href="/css/d_newscss.css">')
+            ->description($this->description['index'] ?? trans('admin.list'))
+            ->body($this->grid());
+    }
 
     /**
      * Make a grid builder.
@@ -27,7 +43,26 @@ class PatentSellController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new PatentSell());
-
+        $grid->filter(function(Grid\Filter $filter){
+            $filter->disableIdFilter();
+            $filter->column(1/3,function(Grid\Filter $filter){
+                $filter->equal('patent_type_id','专利类型')->select(PatentType::pluck('name','id'));
+                $filter->between('created_at', '发布日期')->date();
+            });
+            $filter->column(1/3,function(Grid\Filter $filter){
+                $filter->equal('patent_case__id','专利状态')->select(PatentCase::pluck('name','id'));
+                $filter->where(function ($query) {
+                    $query->where('patent_sn', 'like', "%{$this->input}%")
+                        ->orWhere('patent_name', 'like', "%{$this->input}%")
+                        ->orWhere('patent_person', 'like', "%{$this->input}%")
+                        ->orWhere('remark', 'like', "%{$this->input}%");
+                }, '关键字')->placeholder('申请号/名称/申请人/说明');
+            });
+            $filter->column(1/3,function(Grid\Filter $filter){
+                $filter->equal('patent_cert_id','下证状态')->select(PatentCert::pluck('name','id'));
+                $filter->equal('sale_state','交易状态')->select(PatentSell::SELL_STATE);
+            });
+        });
         $grid->column('id', __('序号'));
         $grid->column('type.logo', __('专利信息'))->image('/','',30)
             ->display(function($logo){
@@ -41,18 +76,24 @@ class PatentSellController extends AdminController
                 $cert_name = $this->cert?$this->cert->name:'';
                 return $case_name.'<br/>'.$cert_name;
             });
-        $sale_state = Good::SALE_STATE;
-        unset($sale_state[0]);
-        $grid->column('sale_state', __('member.state'))->width(150)
-            ->editable('select', [1=>'待交易',2=>'已预约','3'=>'已下架']);
-        $grid->column('price', __('member.parent_price'))->width(150)->editable();
-        $grid->column('sale_remark', __('member.sale_remark'))
-            ->display(function($sale_remark){return $sale_remark?:'';})->width(200)->editable('textarea');
+        $grid->column('sale_state', __('member.state'))->using(PatentSell::SELL_STATE)
+            ->label([1=>'danger',2=>'info',3=>'success',6=>'default']);
+            //->width(150)->editable('select', PatentSell::SELL_STATE);
+        $grid->column('price', __('member.parent_price'));//->width(150)->editable();
+        $grid->column('remark', __('member.sale_remark'));
+            //->display(function($sale_remark){return $sale_remark?:'';})->width(200)->editable('textarea');
         $grid->disableBatchActions(false);
+        $grid->disableFilter(false);
+        $grid->batchActions(function (Grid\Tools\BatchActions $batchActions) {
+            $batchActions->disableDeleteAndHodeSelectAll();
+        });
+        $grid->tools(function(Grid\Tools $tools){
+            $tools->append(new BatchPatentOnSell());
+            $tools->append(new BatchPatentSellEdit());
+            $tools->append(new BatchPatentSellDelete());
+        });
 
         Admin::script('$("td").css("vertical-align","middle")');
-        return $grid;
-
         return $grid;
     }
 
